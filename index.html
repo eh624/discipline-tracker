@@ -122,7 +122,7 @@ var KO={"아침 7시 기상":"Wake up at 7 AM","순공 6시간 이상":"6+ hrs f
 function norm(){state.habits=(state.habits||[]).map(function(x){return KO[x]||x});state.checks=state.checks||{};state.starts=state.starts||[];state.ends=state.ends||[];state.joined=state.joined||0;while(state.starts.length<state.habits.length)state.starts.push(0);while(state.ends.length<state.habits.length)state.ends.push(0)}
 norm();
 function ymd(y,m,d){return y*10000+(m+1)*100+d}
-var SB_URL="",SB_KEY="sb_publishable_MOY2-ApfVch3xBzZuJDuGA_cagNLn6C";/* <- paste your Supabase Project URL and anon public key here */
+var SB_URL="https://ewqqmemaumyzkdpactbp.supabase.co",SB_KEY="sb_publishable_MOY2-ApfVch3xBzZuJDuGA_cagNLn6C";/* <- paste your Supabase Project URL and anon public key here */
 var sb=null,uid=null,tmr=null;
 function setSync(t){var e=document.getElementById("sync");if(e)e.textContent=t}
 function push(){
