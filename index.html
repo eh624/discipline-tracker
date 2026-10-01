@@ -234,7 +234,7 @@ function render(){
       for(q=1;q<=LL;q++)dd.push(new Date(y,mm,q));
       var r2=calc(dd),pp=r2[0]?Math.round(r2[1]/r2[0]*100):0;
       yg+=r2[0];yd+=r2[1];
-      yb+='<div class="wk"'+(r2[0]?'':' style="opacity:.35"')+'><span>'+(r2[0]?pp:'–')+'</span><i style="height:'+Math.max(pp*0.6,3)+'%"></i><span'+(mm==m?' style="color:var(--ink);font-weight:700"':'')+'>'+(mm+1)+'</span></div>';
+      yb+='<div class="wk"'+(r2[0]?'':' style="opacity:.35"')+'><span>'+(r2[0]?pp:'–')+'</span><i style="height:'+Math.max(pp*0.6,3)+'%"></i><span'+(mm==m?' style="font-size:9px;color:var(--ink);font-weight:700"':' style="font-size:9px"')+'>'+MN[mm]+'</span></div>';
     }
     $("weekly").innerHTML=yb;$("weekly").style.gap="2px";goal=yg;done=yd;
   }
