@@ -133,7 +133,8 @@ function calc(days){
 function myStats(){
   var now=new Date(),y=now.getFullYear(),m=now.getMonth(),t=now.getDate(),L=new Date(y,m+1,0).getDate(),md=[],wd=[],i;
   for(i=1;i<=L;i++)md.push(new Date(y,m,i));
-  for(i=0;i<7;i++)wd.push(new Date(y,m,t-i));
+  var off=(now.getDay()+6)%7;
+  for(i=0;i<7;i++)wd.push(new Date(y,m,t-off+i));
   return {t:calc([new Date(y,m,t)]),m:calc(md),w:calc(wd)};
 }
 function pushStats(){
@@ -277,7 +278,7 @@ async function loadGroups(){
   order.forEach(function(gid){
     var g=gs[gid];
     g.m.sort(function(a,b){var A=st[a.user_id],B=st[b.user_id];return (B?pct(B.m_done,B.m_goal):-1)-(A?pct(A.m_done,A.m_goal):-1)});
-    h+='<div class="gcard"><div class="ghd"><b>'+esc(g.name)+'</b><span>Invite code: '+esc(g.code)+'</span><button data-leave="'+gid+'">Leave</button></div><div style="overflow-x:auto"><table class="gt"><tr><th>Member</th><th>Today</th><th>Last 7 days</th><th>This month</th></tr>';
+    h+='<div class="gcard"><div class="ghd"><b>'+esc(g.name)+'</b><span>Invite code: '+esc(g.code)+'</span><button data-leave="'+gid+'">Leave</button></div><div style="overflow-x:auto"><table class="gt"><tr><th>Member</th><th>Today</th><th>This week</th><th>This month</th></tr>';
     g.m.forEach(function(x){
       var q=st[x.user_id];
       h+='<tr'+(x.user_id==uid?' class="me"':'')+'><td>'+esc(x.display_name)+(x.user_id==uid?' (me)':'')+'</td><td>'+(q?cellPc(q.t_done||0,q.t_goal||0):'–')+'</td><td>'+(q?cellPc(q.w_done,q.w_goal):'–')+'</td><td>'+(q?cellPc(q.m_done,q.m_goal):'–')+'</td></tr>';
@@ -323,3 +324,4 @@ try{
 </script>
 </body>
 </html>
+ 
