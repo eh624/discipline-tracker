@@ -66,6 +66,18 @@ td.name button.rn{font-size:13px}
 .mini{width:60px;height:6px;border-radius:3px;background:var(--line);overflow:hidden;flex:none}
 .mini i{display:block;height:100%;background:var(--on)}
 .gh{font-size:12px;color:var(--mute);margin-bottom:8px}
+#tp{margin-bottom:14px;gap:6px;justify-content:flex-start}
+.tph{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px}
+.tph b{font-family:"Gowun Batang",serif;font-size:15px}
+.seg{display:flex}
+.seg button{font:inherit;font-size:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:4px 12px;cursor:pointer;margin-left:-1px}
+.seg button:first-child{border-radius:8px 0 0 8px;margin-left:0}.seg button:last-child{border-radius:0 8px 8px 0}
+.seg button.on{background:var(--on);border-color:var(--on);color:#fff}
+.tr{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:13px;border-top:1px solid var(--line)}
+.tr .rk{width:16px;color:var(--mute);font-size:11px;text-align:center}
+.tr .nmx{flex:1;overflow-wrap:anywhere;min-width:0}
+.tr .nmx em{font-style:normal;color:var(--mute);font-size:11px}
+.tr .pc{flex:none}
 td.off{background:color-mix(in srgb,var(--line) 40%,transparent)}
 tfoot td{font-size:11px;color:var(--mute);padding:6px 0}
 .add{display:flex;gap:8px;margin-top:14px}
@@ -86,10 +98,11 @@ table{min-width:0}
   <div class="top">
     <div class="card"><select id="yr" aria-label="Year"></select><select id="mo" aria-label="Month"></select></div>
     <div class="card daily"><div class="bars" id="daily"></div><div class="ax"><span id="d1"></span><span id="d2"></span></div><h3>Daily progress</h3></div>
-    <div class="card weekly"><div class="wbars" id="weekly"></div><h3>Weekly progress</h3></div>
+    <div class="card weekly"><div class="wbars" id="weekly"></div><div class="seg" id="wseg" style="justify-content:center;margin-top:6px"></div></div>
     <div class="card gl"><div class="big"><span id="goal">0</span><small>goal</small></div><div class="big"><span id="ach">0</span><small>achieved</small></div></div>
-    <div class="card"><div class="pie" id="pie"><span id="ppct">0%</span></div><h3>Total stats</h3></div>
+    <div class="card"><div class="pie" id="pie"><span id="ppct">0%</span></div><h3 id="ptitle">Total stats (monthly)</h3></div>
   </div>
+  <div class="card" id="tp"><div class="tph"><b>Top 5</b><div class="seg" id="tpb"></div></div><div id="tpl"></div></div>
   <div class="wbar" id="wbar"><button id="wp" aria-label="Previous week">‹</button><span id="wl"></span><button id="wn" aria-label="Next week">›</button></div>
   <div class="scroll"><table id="tbl"></table></div>
   <div class="add"><input id="newh" placeholder="New habit (e.g. Stretching)" maxlength="30"><button id="addb">Add</button></div>
@@ -119,7 +132,44 @@ function push(){
       .then(function(r){setSync(r.error?"Sync failed – saved on this device only":"☁ Synced");if(!r.error)pushStats().then(function(){if(hasG)loadGroups()})},function(){setSync("Sync failed – saved on this device only")});
   },400);
 }
-var TRACK_START=20260930,hasG=false,me="";
+var TRACK_START=20260930,hasG=false,me="",tpk="month",wmode="week";
+function rangeDays(k){
+  var now=new Date(),y=now.getFullYear(),m=now.getMonth(),t=now.getDate(),end=new Date(y,m,t),a;
+  if(k=="week")a=new Date(y,m,t-((now.getDay()+6)%7));
+  else if(k=="month")a=new Date(y,m,1);
+  else if(k=="year")a=new Date(y,0,1);
+  else a=new Date(2026,8,30);
+  var out=[],dt=new Date(a);
+  while(dt<=end){out.push(new Date(dt));dt.setDate(dt.getDate()+1)}
+  return out;
+}
+function topList(k){
+  var days=rangeDays(k),res=[];
+  state.habits.forEach(function(name,i){
+    var g=0,n=0;
+    days.forEach(function(dt){
+      var y=dt.getFullYear(),m=dt.getMonth(),d=dt.getDate(),v=ymd(y,m,d);
+      if(v<TRACK_START||!act(i,v))return;
+      g++;var c=state.checks[y+"-"+(m+1)]||{};if((c[i]||[]).indexOf(d)>-1)n++;
+    });
+    if(g)res.push({name:name,g:g,n:n,del:!!state.ends[i]});
+  });
+  res.sort(function(a,b){return b.n/b.g-a.n/a.g||b.n-a.n});
+  return res.slice(0,5);
+}
+function renderTop(){
+  var L=[["week","Week"],["month","Month"],["year","Year"],["all","All"]],b="";
+  L.forEach(function(x){b+='<button data-k="'+x[0]+'"'+(x[0]==tpk?' class="on"':'')+'>'+x[1]+'</button>'});
+  $("tpb").innerHTML=b;
+  var list=topList(tpk),h="";
+  list.forEach(function(x,j){
+    var p=Math.round(x.n/x.g*100);
+    h+='<div class="tr"><span class="rk">'+(j+1)+'</span><span class="nmx">'+esc(x.name)+(x.del?' <em>(deleted)</em>':'')+'</span><div class="pc"><div class="mini" style="width:80px"><i style="width:'+p+'%"></i></div><span>'+p+'% <span style="color:var(--mute);font-size:11px">('+x.n+'/'+x.g+')</span></span></div></div>';
+  });
+  $("tpl").innerHTML=h||'<div class="gh">No records yet.</div>';
+}
+$("wseg").addEventListener("click",function(e){var b=e.target.closest("button");if(!b||!b.dataset.w)return;wmode=b.dataset.w;render()});
+$("tp").addEventListener("click",function(e){var b=e.target.closest("button");if(!b||!b.dataset.k)return;tpk=b.dataset.k;renderTop()});
 function act(i,v){var e=state.ends[i]||0;return v>=(state.starts[i]||0)&&(!e||v<e)}
 function calc(days){
   var g=0,n=0;
@@ -176,7 +226,20 @@ function render(){
     for(i=0;i<H;i++)for(d=s0;d<=e0;d++)if(on(i,d)){tot++;if(ck(i,d))n++}
     var p=tot?Math.round(n/tot*100):0;
     wb+='<div class="wk"><span>'+p+'%</span><i style="height:'+Math.max(p*0.6,3)+'%"></i><span>'+'W'+(w+1)+'</span></div>'}
-  $("weekly").innerHTML=wb;
+  $("weekly").innerHTML=wb;$("weekly").style.gap="6px";
+  if(wmode=="month"){
+    var yb="",yg=0,yd=0;
+    for(var mm=0;mm<12;mm++){
+      var dd=[],LL=new Date(y,mm+1,0).getDate(),q;
+      for(q=1;q<=LL;q++)dd.push(new Date(y,mm,q));
+      var r2=calc(dd),pp=r2[0]?Math.round(r2[1]/r2[0]*100):0;
+      yg+=r2[0];yd+=r2[1];
+      yb+='<div class="wk"'+(r2[0]?'':' style="opacity:.35"')+'><span>'+(r2[0]?pp:'–')+'</span><i style="height:'+Math.max(pp*0.6,3)+'%"></i><span'+(mm==m?' style="color:var(--ink);font-weight:700"':'')+'>'+(mm+1)+'</span></div>';
+    }
+    $("weekly").innerHTML=yb;$("weekly").style.gap="2px";goal=yg;done=yd;
+  }
+  $("ptitle").textContent=wmode=="month"?"Total stats (year)":"Total stats (monthly)";
+  $("wseg").innerHTML='<button data-w="week"'+(wmode=="week"?' class="on"':'')+'>Weekly</button><button data-w="month"'+(wmode=="month"?' class="on"':'')+'>Monthly</button>';
   var pc=goal?Math.round(done/goal*100):0;
   $("goal").textContent=goal;$("ach").textContent=done;
   $("pie").style.setProperty("--p",(pc*3.6)+"deg");$("ppct").textContent=pc+"%";
@@ -194,6 +257,7 @@ function render(){
   for(d=a;d<=b;d++)h+='<td>'+dc[d]+'</td>';
   h+='<td class="g"></td><td></td><td></td></tr></tfoot>';
   $("tbl").innerHTML=h;
+  renderTop();
 }
 $("yr").onchange=$("mo").onchange=function(){cur=new Date(+$("yr").value,+$("mo").value-1,1);if(cur<MIN)cur=new Date(MIN);wk=null;render()};
 $("tbl").addEventListener("change",function(e){
@@ -324,4 +388,3 @@ try{
 </script>
 </body>
 </html>
- 
