@@ -132,9 +132,9 @@ function calc(days){
 }
 function myStats(){
   var now=new Date(),y=now.getFullYear(),m=now.getMonth(),t=now.getDate(),L=new Date(y,m+1,0).getDate(),md=[],wd=[],i;
-  for(i=1;i<=L;i++)md.push(new Date(y,m,i));
+  for(i=1;i<=t;i++)md.push(new Date(y,m,i));
   var off=(now.getDay()+6)%7;
-  for(i=0;i<7;i++)wd.push(new Date(y,m,t-off+i));
+  for(i=0;i<=off;i++)wd.push(new Date(y,m,t-off+i));
   return {t:calc([new Date(y,m,t)]),m:calc(md),w:calc(wd)};
 }
 function pushStats(){
