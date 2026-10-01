@@ -48,6 +48,24 @@ td.n{font-size:13px;min-width:44px;padding:0 6px}td.n b{color:var(--on)}
 .cell input{appearance:none;width:18px;height:18px;border:1.5px solid var(--line);border-radius:4px;margin:0;cursor:pointer;background:transparent}
 .cell input:checked{background:var(--on);border-color:var(--on);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='white' stroke-width='2'/%3E%3C/svg%3E");background-size:100%}
 td.tod{background:var(--today)}
+td.name .nm{overflow-wrap:anywhere;text-align:left}td.name .bt{flex:none;gap:0}
+td.name button.rn{font-size:13px}
+#grp{margin-top:22px}
+.gtitle{font-family:"Gowun Batang",serif;font-size:17px;margin:0 0 8px}
+.gcard{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:10px}
+.ghd{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.ghd b{font-family:"Gowun Batang",serif;font-size:15px}
+.ghd span{font-size:11px;color:var(--mute);flex:1}
+.ghd button,#grp .add button{font:inherit;font-size:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:6px 12px;cursor:pointer}
+.gt{width:100%;font-size:13px}
+.gt th{text-align:left;font-size:11px;padding:4px 6px}
+.gt td{text-align:left;padding:6px;border-bottom:1px solid var(--line)}
+.gt tr:last-child td{border-bottom:0}
+.gt tr.me td{background:var(--today)}
+.pc{display:flex;align-items:center;gap:6px;white-space:nowrap}
+.mini{width:60px;height:6px;border-radius:3px;background:var(--line);overflow:hidden;flex:none}
+.mini i{display:block;height:100%;background:var(--on)}
+.gh{font-size:12px;color:var(--mute);margin-bottom:8px}
 td.off{background:color-mix(in srgb,var(--line) 40%,transparent)}
 tfoot td{font-size:11px;color:var(--mute);padding:6px 0}
 .add{display:flex;gap:8px;margin-top:14px}
@@ -76,6 +94,12 @@ table{min-width:0}
   <div class="scroll"><table id="tbl"></table></div>
   <div class="add"><input id="newh" placeholder="New habit (e.g. Stretching)" maxlength="30"><button id="addb">Add</button></div>
   <div class="add" id="auth" style="flex-wrap:wrap"></div>
+  <div id="grp" style="display:none">
+    <h2 class="gtitle">Groups</h2>
+    <div id="glist"></div>
+    <div class="add" style="flex-wrap:wrap"><input id="gname" placeholder="New group name" maxlength="30"><button id="gnew">Create</button></div>
+    <div class="add" style="flex-wrap:wrap"><input id="gcode" placeholder="Invite code" maxlength="12" autocapitalize="characters"><button id="gjoin">Join</button><button id="gref">Refresh</button></div>
+  </div>
   <div id="sync" style="text-align:center;font-size:11px;color:var(--mute);margin-top:10px"></div>
 </div>
 <script>
@@ -85,15 +109,37 @@ var KO={"아침 7시 기상":"Wake up at 7 AM","순공 6시간 이상":"6+ hrs f
 function norm(){state.habits=(state.habits||[]).map(function(x){return KO[x]||x});state.checks=state.checks||{};state.starts=state.starts||[];state.ends=state.ends||[];while(state.starts.length<state.habits.length)state.starts.push(0);while(state.ends.length<state.habits.length)state.ends.push(0)}
 norm();
 function ymd(y,m,d){return y*10000+(m+1)*100+d}
-var SB_URL="https://ewqqmemaumyzkdpactbp.supabase.co/",SB_KEY="sb_publishable_MOY2-ApfVch3xBzZuJDuGA_cagNLn6C";/* <- paste your Supabase Project URL and anon public key here */
+var SB_URL="https://ewqqmemaumyzkdpactbp.supabase.co",SB_KEY="sb_publishable_MOY2-ApfVch3xBzZuJDuGA_cagNLn6C";/* <- paste your Supabase Project URL and anon public key here */
 var sb=null,uid=null,tmr=null;
 function setSync(t){var e=document.getElementById("sync");if(e)e.textContent=t}
 function push(){
   if(!sb||!uid)return;clearTimeout(tmr);
   tmr=setTimeout(function(){tmr=null;
     sb.from("tracker").upsert({user_id:uid,data:{habits:state.habits,checks:state.checks,starts:state.starts,ends:state.ends},updated_at:new Date().toISOString()})
-      .then(function(r){setSync(r.error?"Sync failed – saved on this device only":"☁ Synced")},function(){setSync("Sync failed – saved on this device only")});
+      .then(function(r){setSync(r.error?"Sync failed – saved on this device only":"☁ Synced");if(!r.error)pushStats().then(function(){if(hasG)loadGroups()})},function(){setSync("Sync failed – saved on this device only")});
   },400);
+}
+var TRACK_START=20260930,hasG=false,me="";
+function act(i,v){var e=state.ends[i]||0;return v>=(state.starts[i]||0)&&(!e||v<e)}
+function calc(days){
+  var g=0,n=0;
+  days.forEach(function(dt){
+    var y=dt.getFullYear(),m=dt.getMonth(),d=dt.getDate(),v=ymd(y,m,d),c=state.checks[y+"-"+(m+1)]||{};
+    if(v<TRACK_START)return;
+    state.habits.forEach(function(_,i){if(!act(i,v))return;g++;if((c[i]||[]).indexOf(d)>-1)n++});
+  });
+  return [g,n];
+}
+function myStats(){
+  var now=new Date(),y=now.getFullYear(),m=now.getMonth(),t=now.getDate(),md=[],wd=[],i;
+  for(i=1;i<=t;i++)md.push(new Date(y,m,i));
+  for(i=0;i<7;i++)wd.push(new Date(y,m,t-i));
+  return {m:calc(md),w:calc(wd)};
+}
+function pushStats(){
+  if(!sb||!uid)return Promise.resolve();
+  var q=myStats();
+  return sb.from("stats").upsert({user_id:uid,m_goal:q.m[0],m_done:q.m[1],w_goal:q.w[0],w_done:q.w[1],updated_at:new Date().toISOString()}).then(function(){},function(){});
 }
 function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}push()}
 function $(i){return document.getElementById(i)}
@@ -139,7 +185,7 @@ function render(){
   state.habits.forEach(function(name,i){
     if(!Ni[i])return;
     var row=c[i]||[],n=row.length,d;
-    h+='<tr><td class="name"><span>'+esc(name)+'<button data-del="'+i+'" aria-label="Delete">×</button></span></td>';
+    h+='<tr><td class="name"><span><span class="nm">'+esc(name)+'</span><span class="bt"><button class="rn" data-ren="'+i+'" aria-label="Rename">✎</button><button data-del="'+i+'" aria-label="Delete">×</button></span></span></td>';
     for(d=a;d<=b;d++)h+=!on(i,d)?'<td class="off"></td>':'<td class="'+(d==td?"tod":"")+'"><label class="cell"><input type="checkbox" data-h="'+i+'" data-d="'+d+'"'+(row.indexOf(d)>-1?" checked":"")+'></label></td>';
     h+='<td class="n g">'+Ni[i]+'</td><td class="n"><b>'+ni[i]+'</b></td><td class="n">'+(Ni[i]?Math.round(ni[i]/Ni[i]*100):0)+'%</td></tr>';
   });
@@ -157,7 +203,9 @@ $("tbl").addEventListener("change",function(e){
   save();render();
 });
 $("tbl").addEventListener("click",function(e){
-  var b=e.target.closest("button");if(!b||b.dataset.del==null)return;
+  var b=e.target.closest("button");if(!b)return;
+  if(b.dataset.ren!=null){var k=+b.dataset.ren,nv=prompt("Rename routine",state.habits[k]);if(nv===null)return;nv=nv.trim().slice(0,30);if(!nv)return;state.habits[k]=nv;save();render();return}
+  if(b.dataset.del==null)return;
   var i=+b.dataset.del;if(!confirm('Delete "'+state.habits[i]+'"?\nPast records are kept; it is removed from today onward.'))return;
   var n=new Date();state.ends[i]=ymd(n.getFullYear(),n.getMonth(),n.getDate());
   save();render();
@@ -184,6 +232,7 @@ function renderAuth(sess){
         if(f.error)throw f.error;
       }catch(e){setSync("Sync failed – not signed out, to avoid losing data");return}
       await sb.auth.signOut();
+      $("grp").style.display="none";$("glist").innerHTML="";hasG=false;
       try{localStorage.removeItem(KEY)}catch(e){}
       state={habits:["Wake up at 7 AM","6+ hrs focused study","Workout","Bed before 1 AM","Drink 2L+ water","No snacks","3-min meditation"],checks:{},starts:[],ends:[]};
       norm();wk=null;render();
@@ -205,16 +254,68 @@ async function pull(){
     render();
   }else push();
   setSync("☁ Synced");
+  await pushStats();loadGroups();
 }
+function pct(n,g){return g?Math.round(n/g*100):0}
+function cellPc(n,g){var p=pct(n,g);return '<div class="pc"><div class="mini"><i style="width:'+p+'%"></i></div>'+(g?p+'% <span style="color:var(--mute);font-size:11px">('+n+'/'+g+')</span>':'–')+'</div>'}
+async function loadGroups(){
+  var box=$("grp");
+  if(!sb||!uid){box.style.display="none";$("glist").innerHTML="";hasG=false;return}
+  box.style.display="block";
+  var r=await sb.from("group_members").select("group_id,user_id,display_name,groups(name,code)");
+  if(r.error){$("glist").innerHTML='<div class="gh">Groups not available yet: '+esc(r.error.message)+'</div>';return}
+  var rows=r.data||[],ids=[],gs={},order=[];
+  rows.forEach(function(x){
+    if(ids.indexOf(x.user_id)<0)ids.push(x.user_id);
+    if(!gs[x.group_id]){gs[x.group_id]={name:(x.groups&&x.groups.name)||"",code:(x.groups&&x.groups.code)||"",m:[]};order.push(x.group_id)}
+    gs[x.group_id].m.push(x);
+  });
+  hasG=order.length>0;
+  var sr=ids.length?await sb.from("stats").select("*").in("user_id",ids):{data:[]},st={};
+  (sr.data||[]).forEach(function(x){st[x.user_id]=x});
+  var h="";
+  order.forEach(function(gid){
+    var g=gs[gid];
+    g.m.sort(function(a,b){var A=st[a.user_id],B=st[b.user_id];return (B?pct(B.m_done,B.m_goal):-1)-(A?pct(A.m_done,A.m_goal):-1)});
+    h+='<div class="gcard"><div class="ghd"><b>'+esc(g.name)+'</b><span>Invite code: '+esc(g.code)+'</span><button data-leave="'+gid+'">Leave</button></div><div style="overflow-x:auto"><table class="gt"><tr><th>Member</th><th>This month</th><th>Last 7 days</th></tr>';
+    g.m.forEach(function(x){
+      var q=st[x.user_id];
+      h+='<tr'+(x.user_id==uid?' class="me"':'')+'><td>'+esc(x.display_name)+(x.user_id==uid?' (me)':'')+'</td><td>'+(q?cellPc(q.m_done,q.m_goal):'–')+'</td><td>'+(q?cellPc(q.w_done,q.w_goal):'–')+'</td></tr>';
+    });
+    h+='</table></div></div>';
+  });
+  $("glist").innerHTML=h||'<div class="gh">No groups yet. Create one or join with an invite code. Only completion rates are shared – never your routine names.</div>';
+}
+$("gnew").onclick=function(){
+  var n=$("gname").value.trim();if(!n||!sb||!uid)return;
+  sb.rpc("create_group",{g_name:n,d_name:me}).then(function(r){
+    if(r.error){setSync(r.error.message);return}
+    $("gname").value="";pushStats().then(loadGroups);
+  });
+};
+$("gjoin").onclick=function(){
+  var c=$("gcode").value.trim();if(!c||!sb||!uid)return;
+  sb.rpc("join_group",{g_code:c,d_name:me}).then(function(r){
+    if(r.error){setSync(r.error.message.indexOf("invalid")>-1?"Invalid invite code":r.error.message);return}
+    $("gcode").value="";pushStats().then(loadGroups);
+  });
+};
+$("gref").onclick=function(){if(sb&&uid)pushStats().then(loadGroups)};
+$("glist").addEventListener("click",function(e){
+  var b=e.target.closest("button");if(!b||!b.dataset.leave)return;
+  if(!confirm("Leave this group?"))return;
+  sb.from("group_members").delete().eq("group_id",b.dataset.leave).eq("user_id",uid).then(function(r){if(r.error)setSync(r.error.message);else loadGroups()});
+});
 try{
   if(window.supabase&&SB_URL&&SB_KEY){
     sb=supabase.createClient(SB_URL.trim().replace(/\/+$/,"").replace(/\/(rest|auth)\/v1.*$/,""),SB_KEY.trim());
     renderAuth(null);setSync("Sign in to sync across devices");
     sb.auth.onAuthStateChange(function(ev,sess){
       uid=sess&&sess.user?sess.user.id:null;
+      me=sess&&sess.user?(sess.user.email||"").split("@")[0]:"";
       renderAuth(sess);
       if(uid){if(!tmr)setTimeout(function(){pull().catch(function(){})},0)}
-      else setSync("Sign in to sync across devices");
+      else{setSync("Sign in to sync across devices");$("grp").style.display="none";$("glist").innerHTML="";hasG=false}
     });
     document.addEventListener("visibilitychange",function(){if(!document.hidden&&uid&&!tmr)pull().catch(function(){})});
   }else renderAuth(null);
