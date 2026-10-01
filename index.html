@@ -119,20 +119,20 @@ table{min-width:0}
 var KEY="disc-tracker-v4",state={habits:["Wake up at 7 AM","6+ hrs focused study","Workout","Bed before 1 AM","Drink 2L+ water","No snacks","3-min meditation"],checks:{},starts:[],ends:[]};
 try{var s=localStorage.getItem(KEY);if(s)state=JSON.parse(s)}catch(e){}
 var KO={"아침 7시 기상":"Wake up at 7 AM","순공 6시간 이상":"6+ hrs focused study","운동":"Workout","1시 전 취침":"Bed before 1 AM","물 2L 이상":"Drink 2L+ water","간식 안 먹기":"No snacks","3분 명상":"3-min meditation"};
-function norm(){state.habits=(state.habits||[]).map(function(x){return KO[x]||x});state.checks=state.checks||{};state.starts=state.starts||[];state.ends=state.ends||[];while(state.starts.length<state.habits.length)state.starts.push(0);while(state.ends.length<state.habits.length)state.ends.push(0)}
+function norm(){state.habits=(state.habits||[]).map(function(x){return KO[x]||x});state.checks=state.checks||{};state.starts=state.starts||[];state.ends=state.ends||[];state.joined=state.joined||0;while(state.starts.length<state.habits.length)state.starts.push(0);while(state.ends.length<state.habits.length)state.ends.push(0)}
 norm();
 function ymd(y,m,d){return y*10000+(m+1)*100+d}
-var SB_URL="https://ewqqmemaumyzkdpactbp.supabase.co",SB_KEY="sb_publishable_MOY2-ApfVch3xBzZuJDuGA_cagNLn6C";/* <- paste your Supabase Project URL and anon public key here */
+var SB_URL="",SB_KEY="sb_publishable_MOY2-ApfVch3xBzZuJDuGA_cagNLn6C";/* <- paste your Supabase Project URL and anon public key here */
 var sb=null,uid=null,tmr=null;
 function setSync(t){var e=document.getElementById("sync");if(e)e.textContent=t}
 function push(){
   if(!sb||!uid)return;clearTimeout(tmr);
   tmr=setTimeout(function(){tmr=null;
-    sb.from("tracker").upsert({user_id:uid,data:{habits:state.habits,checks:state.checks,starts:state.starts,ends:state.ends},updated_at:new Date().toISOString()})
+    sb.from("tracker").upsert({user_id:uid,data:{habits:state.habits,checks:state.checks,starts:state.starts,ends:state.ends,joined:state.joined||0},updated_at:new Date().toISOString()})
       .then(function(r){setSync(r.error?"Sync failed – saved on this device only":"☁ Synced");if(!r.error)pushStats().then(function(){if(hasG)loadGroups()})},function(){setSync("Sync failed – saved on this device only")});
   },400);
 }
-var TRACK_START=20260930,hasG=false,me="",tpk="month",wmode="week";
+var TRACK_START=20260930,hasG=false,me="",cy=0,tpk="month",wmode="week";
 function rangeDays(k){
   var now=new Date(),y=now.getFullYear(),m=now.getMonth(),t=now.getDate(),end=new Date(y,m,t),a;
   if(k=="week")a=new Date(y,m,t-((now.getDay()+6)%7));
@@ -170,7 +170,7 @@ function renderTop(){
 }
 $("wseg").addEventListener("click",function(e){var b=e.target.closest("button");if(!b||!b.dataset.w)return;wmode=b.dataset.w;render()});
 $("tp").addEventListener("click",function(e){var b=e.target.closest("button");if(!b||!b.dataset.k)return;tpk=b.dataset.k;renderTop()});
-function act(i,v){var e=state.ends[i]||0;return v>=(state.starts[i]||0)&&(!e||v<e)}
+function act(i,v){var e=state.ends[i]||0;return v>=Math.max(state.joined||0,state.starts[i]||0)&&(!e||v<e)}
 function calc(days){
   var g=0,n=0;
   days.forEach(function(dt){
@@ -215,7 +215,7 @@ function render(){
   $("mo").innerHTML=mo;
   $("wbar").style.display=isM?"flex":"none";
   $("wl").textContent=a==b?"Day "+a:"Days "+a+"–"+b;
-  function on(i,d){var v=ymd(y,m,d),e=state.ends[i]||0;return v>=(state.starts[i]||0)&&(!e||v<e)}
+  function on(i,d){var v=ymd(y,m,d),e=state.ends[i]||0;return v>=Math.max(state.joined||0,state.starts[i]||0)&&(!e||v<e)}
   function ck(i,d){return (c[i]||[]).indexOf(d)>-1}
   var dc={},ac={},Ni=[],ni=[],goal=0,done=0;
   for(d=F;d<=days;d++){dc[d]=0;ac[d]=0;for(i=0;i<H;i++)if(on(i,d)){ac[d]++;if(ck(i,d))dc[d]++}}
@@ -293,7 +293,7 @@ function renderAuth(sess){
     $("so").onclick=async function(){
       clearTimeout(tmr);tmr=null;
       try{
-        var f=await sb.from("tracker").upsert({user_id:uid,data:{habits:state.habits,checks:state.checks,starts:state.starts,ends:state.ends},updated_at:new Date().toISOString()});
+        var f=await sb.from("tracker").upsert({user_id:uid,data:{habits:state.habits,checks:state.checks,starts:state.starts,ends:state.ends,joined:state.joined||0},updated_at:new Date().toISOString()});
         if(f.error)throw f.error;
       }catch(e){setSync("Sync failed – not signed out, to avoid losing data");return}
       await sb.auth.signOut();
@@ -314,10 +314,14 @@ async function pull(){
   if(r.error){setSync("Sync failed – saved on this device only");return}
   var d=r.data&&r.data.data;
   if(d&&d.habits){
-    state={habits:d.habits,checks:d.checks||{},starts:d.starts||[],ends:d.ends||[]};norm();
+    state={habits:d.habits,checks:d.checks||{},starts:d.starts||[],ends:d.ends||[],joined:d.joined||0};norm();
     try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}
     render();
-  }else push();
+  }else{
+    var any=Object.keys(state.checks).some(function(k){return Object.keys(state.checks[k]).some(function(j){return state.checks[k][j].length})});
+    if(!any&&cy){state.joined=cy;try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}render()}
+    push();
+  }
   setSync("☁ Synced");
   await pushStats();loadGroups();
 }
@@ -377,6 +381,7 @@ try{
     renderAuth(null);setSync("Sign in to sync across devices");
     sb.auth.onAuthStateChange(function(ev,sess){
       uid=sess&&sess.user?sess.user.id:null;
+      cy=0;if(sess&&sess.user&&sess.user.created_at){var cd=new Date(sess.user.created_at);cy=ymd(cd.getFullYear(),cd.getMonth(),cd.getDate())}
       me=sess&&sess.user?(sess.user.email||"").split("@")[0]:"";
       renderAuth(sess);
       if(uid){if(!tmr)setTimeout(function(){pull().catch(function(){})},0)}
