@@ -100,6 +100,7 @@ table{min-width:0}
 .cell{width:30px;height:44px}.cell input{width:22px;height:22px}th{font-size:12px}
 }
 .hd{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}.brand{display:flex;align-items:center;gap:10px;min-width:0}.brand svg{width:92px;height:92px;flex:none}.tf{fill:var(--on)}.brand span{font-family:"Gowun Batang",serif;font-size:20px;font-weight:700;letter-spacing:.02em;white-space:nowrap}.t1{stroke:var(--on)}.t0{stroke:var(--line)}@media (max-width:640px){.brand svg{width:72px;height:72px}.brand span{font-size:15px;white-space:normal;line-height:1.2}}
+.atd{margin-top:6px;border-top:1px solid var(--line);padding-top:6px}.atd summary{cursor:pointer;font-size:13px;color:var(--mute);padding:4px 0}.atd[open] summary{color:var(--ink)}.atd .gh{margin:4px 0}
 </style>
 </head>
 <body>
@@ -112,7 +113,7 @@ table{min-width:0}
     <div class="card gl"><div class="big"><span id="goal">0</span><small data-i="goal">goal</small></div><div class="big"><span id="ach">0</span><small data-i="ach">achieved</small></div></div>
     <div class="card"><div class="pie" id="pie"><span id="ppct">0%</span></div><h3 id="ptitle">Total stats (monthly)</h3></div>
   </div>
-  <div class="card" id="tp"><div class="tph"><b>Top 5</b><div class="seg" id="tpb"></div></div><div id="tpl"></div></div>
+  <div class="card" id="tp"><div class="tph"><b>Top 5</b><div class="seg" id="tpb"></div></div><div id="tpl"></div><details class="atd" id="atd"><summary data-i="allRank">All-time ranking by habit</summary><div class="gh" data-i="allRankHint"></div><div id="atl"></div></details></div>
   <div class="wbar" id="wbar"><button id="wp" data-ia="aPrev">‹</button><span id="wl"></span><button id="wn" data-ia="aNext">›</button></div>
   <div class="scroll"><table id="tbl"></table></div>
   <div class="add"><input id="newh" data-ip="newHabit" placeholder="New habit (e.g. Stretching)" maxlength="30"><button id="addb" data-i="add">Add</button></div>
@@ -139,7 +140,7 @@ synced:"☁ Synced",syncFail:"Not synced yet – saved on this device, will sync
 idRule:"ID: 3–30 chars, letters/numbers/. _ -",confirmOn:"Email confirmation is on in Supabase – turn it off to use IDs",signinHint:"Sign in to sync across devices",
 grpNA:"Groups not available yet:",invCode:"Invite code:",leave:"Leave",member:"Member",today:"Today",thisWeek:"This week",thisMonth:"This month",me:"(me)",
 noGroups:"No groups yet. Create one or join with an invite code. Only completion rates are shared – never your routine names.",
-leaveQ:"Leave this group?",badCode:"Invalid invite code"
+leaveQ:"Leave this group?",badCode:"Invalid invite code",allRank:"All-time ranking by habit",allRankHint:"Ranked by success rate. Habits tracked for more days rank higher."
 },ko:{
 aYear:"연도",aMonth:"월",aPrev:"이전 주",aNext:"다음 주",daily:"일별 달성",goal:"목표",ach:"달성",
 newHabit:"새 습관 (예: 스트레칭)",add:"추가",groups:"그룹",newGroup:"새 그룹 이름",create:"만들기",inviteCode:"초대 코드",join:"참여",refresh:"새로고침",
@@ -153,7 +154,7 @@ synced:"☁ 동기화됨",syncFail:"아직 동기화 안 됨 – 이 기기에 �
 idRule:"ID: 3~30자, 영문·숫자·. _ - 만 가능",confirmOn:"Supabase의 이메일 확인이 켜져 있어요 – ID 가입을 쓰려면 꺼주세요",signinHint:"로그인하면 기기 간 동기화돼요",
 grpNA:"그룹을 아직 쓸 수 없어요:",invCode:"초대 코드:",leave:"나가기",member:"멤버",today:"오늘",thisWeek:"이번 주",thisMonth:"이번 달",me:"(나)",
 noGroups:"아직 그룹이 없어요. 만들거나 초대 코드로 참여해 보세요. 달성률만 공유되고 루틴 이름은 공유되지 않아요.",
-leaveQ:"이 그룹에서 나갈까요?",badCode:"초대 코드가 올바르지 않아요"
+leaveQ:"이 그룹에서 나갈까요?",badCode:"초대 코드가 올바르지 않아요",allRank:"역대 습관별 순위",allRankHint:"성공률 순이고, 분모(기록한 날수)가 클수록 위로 올라가요."
 }};
 var DH={"Wake up at 7 AM":"아침 7시 기상","6+ hrs focused study":"순공 6시간 이상","Workout":"운동","Bed before 1 AM":"1시 전 취침","Drink 2L+ water":"물 2L 이상","No snacks":"간식 안 먹기","3-min meditation":"3분 명상"};
 var LANG=(function(){try{var l=localStorage.getItem("disc-lang");if(l==="ko"||l==="en")return l}catch(e){}return /^ko/i.test(navigator.language||"")?"ko":"en"})();
@@ -194,8 +195,10 @@ function rangeDays(k){
   while(dt<=end){out.push(new Date(dt));dt.setDate(dt.getDate()+1)}
   return out;
 }
-function topList(k){
-  var days=rangeDays(k),res=[];
+function wilson(n,g){if(!g)return 0;var z=1.96,z2=z*z,p=n/g;return (p+z2/(2*g)-z*Math.sqrt((p*(1-p)+z2/(4*g))/g))/(1+z2/g)}
+function rankList(k,halfOnly){
+  var days=rangeDays(k),res=[],base=Math.max(TRACK_START,state.joined||0,cy||0),
+  maxG=days.filter(function(dt){return ymd(dt.getFullYear(),dt.getMonth(),dt.getDate())>=base}).length;
   state.habits.forEach(function(name,i){
     var g=0,n=0;
     days.forEach(function(dt){
@@ -203,21 +206,26 @@ function topList(k){
       if(v<TRACK_START||!act(i,v))return;
       g++;var c=state.checks[y+"-"+(m+1)]||{};if((c[i]||[]).indexOf(d)>-1)n++;
     });
-    if(g)res.push({name:name,g:g,n:n,del:!!state.ends[i]});
+    if(g&&(!halfOnly||g*2>=maxG))res.push({name:name,g:g,n:n,del:!!state.ends[i],sc:wilson(n,g)});
   });
-  res.sort(function(a,b){return b.n/b.g-a.n/a.g||b.n-a.n});
-  return res.slice(0,5);
+  res.sort(function(a,b){return (b.sc-a.sc)||(b.g-a.g)||(b.n-a.n)});
+  return res;
+}
+function topList(k){return rankList(k,true).slice(0,5)}
+function trHtml(list){
+  var h="";
+  list.forEach(function(x,j){
+    var p=Math.round(x.n/x.g*100);
+    h+='<div class="tr"><span class="rk">'+(j+1)+'</span><span class="nmx">'+esc(hname(x.name))+(x.del?' <em>'+tx("deleted")+'</em>':'')+'</span><div class="pc"><div class="mini" style="width:80px"><i style="width:'+p+'%"></i></div><span>'+p+'% <span style="color:var(--mute);font-size:11px">('+x.n+'/'+x.g+')</span></span></div></div>';
+  });
+  return h;
 }
 function renderTop(){
   var L=[["week",tx("tWeek")],["month",tx("tMonth")],["year",tx("tYear")],["all",tx("tAll")]],b="";
   L.forEach(function(x){b+='<button data-k="'+x[0]+'"'+(x[0]==tpk?' class="on"':'')+'>'+x[1]+'</button>'});
   $("tpb").innerHTML=b;
-  var list=topList(tpk),h="";
-  list.forEach(function(x,j){
-    var p=Math.round(x.n/x.g*100);
-    h+='<div class="tr"><span class="rk">'+(j+1)+'</span><span class="nmx">'+esc(hname(x.name))+(x.del?' <em>'+tx("deleted")+'</em>':'')+'</span><div class="pc"><div class="mini" style="width:80px"><i style="width:'+p+'%"></i></div><span>'+p+'% <span style="color:var(--mute);font-size:11px">('+x.n+'/'+x.g+')</span></span></div></div>';
-  });
-  $("tpl").innerHTML=h||'<div class="gh">'+tx("noRec")+'</div>';
+  $("tpl").innerHTML=trHtml(topList(tpk))||'<div class="gh">'+tx("noRec")+'</div>';
+  $("atl").innerHTML=trHtml(rankList("all",false))||'<div class="gh">'+tx("noRec")+'</div>';
 }
 $("wseg").addEventListener("click",function(e){var b=e.target.closest("button");if(!b||!b.dataset.w)return;wmode=b.dataset.w;render()});
 $("tp").addEventListener("click",function(e){var b=e.target.closest("button");if(!b||!b.dataset.k)return;tpk=b.dataset.k;renderTop()});
@@ -273,21 +281,23 @@ function render(){
   $("wl").textContent=a==b?tx("dayN",a):tx("daysN",a,b);
   function on(i,d){var v=ymd(y,m,d),e=state.ends[i]||0;return v>=Math.max(state.joined||0,state.starts[i]||0)&&(!e||v<e)}
   function ck(i,d){return (c[i]||[]).indexOf(d)>-1}
-  var dc={},ac={},Ni=[],ni=[],goal=0,done=0;
-  for(d=F;d<=days;d++){dc[d]=0;ac[d]=0;for(i=0;i<H;i++)if(on(i,d)){ac[d]++;if(ck(i,d))dc[d]++}}
-  for(i=0;i<H;i++){Ni[i]=0;ni[i]=0;for(d=F;d<=days;d++)if(on(i,d)){Ni[i]++;if(ck(i,d))ni[i]++}goal+=Ni[i];done+=ni[i]}
+  var nowY=now.getFullYear(),nowM=now.getMonth(),today0=new Date(nowY,nowM,now.getDate()),
+  lastD=(y<nowY||(y==nowY&&m<nowM))?days:((y==nowY&&m==nowM)?now.getDate():F-1);
+  var dc={},ac={},Ni=[],ni=[],Nf=[],goal=0,done=0;
+  for(d=F;d<=days;d++){dc[d]=0;ac[d]=0;for(i=0;i<H;i++)if(on(i,d)){if(d<=lastD)ac[d]++;if(ck(i,d))dc[d]++}}
+  for(i=0;i<H;i++){Ni[i]=0;ni[i]=0;Nf[i]=0;for(d=F;d<=days;d++)if(on(i,d)){Nf[i]++;if(d<=lastD){Ni[i]++;if(ck(i,d))ni[i]++}}goal+=Ni[i];done+=ni[i]}
   var hb="";for(d=F;d<=days;d++)hb+='<i class="'+(d==td?"t":"")+'" style="height:'+(ac[d]?dc[d]/ac[d]*100:0)+'%" title="'+tx("dayTip",d,dc[d],ac[d])+'"></i>';
   $("daily").innerHTML=hb;$("d1").textContent=tx("dayN",F);$("d2").textContent=tx("dayN",days);
   var wb="";for(var w=0;w<pages;w++){var s0=F+w*7,e0=Math.min(days,s0+6),n=0,tot=0;
-    for(i=0;i<H;i++)for(d=s0;d<=e0;d++)if(on(i,d)){tot++;if(ck(i,d))n++}
+    for(i=0;i<H;i++)for(d=s0;d<=e0;d++)if(on(i,d)&&d<=lastD){tot++;if(ck(i,d))n++}
     var p=tot?Math.round(n/tot*100):0;
-    wb+='<div class="wk"><span>'+p+'%</span><i style="height:'+Math.max(p*0.6,3)+'%"></i><span>'+tx("wN",w+1)+'</span></div>'}
+    wb+='<div class="wk"><span>'+(tot?p+'%':'–')+'</span><i style="height:'+Math.max(p*0.6,3)+'%"></i><span>'+tx("wN",w+1)+'</span></div>'}
   $("weekly").innerHTML=wb;$("weekly").style.gap="6px";
   if(wmode=="month"){
     var yb="",yg=0,yd=0;
     for(var mm=0;mm<12;mm++){
       var dd=[],LL=new Date(y,mm+1,0).getDate(),q;
-      for(q=1;q<=LL;q++)dd.push(new Date(y,mm,q));
+      for(q=1;q<=LL;q++){var qd=new Date(y,mm,q);if(qd<=today0)dd.push(qd)}
       var r2=calc(dd),pp=r2[0]?Math.round(r2[1]/r2[0]*100):0;
       yg+=r2[0];yd+=r2[1];
       yb+='<div class="wk"'+(r2[0]?'':' style="opacity:.35"')+'><span>'+(r2[0]?pp:'–')+'</span><i style="height:'+Math.max(pp*0.6,3)+'%"></i><span'+(mm==m?' style="font-size:9px;color:var(--ink);font-weight:700"':' style="font-size:9px"')+'>'+mname(mm)+'</span></div>';
@@ -303,7 +313,7 @@ function render(){
   for(d=a;d<=b;d++)h+='<th class="'+(d==td?"today":"")+'">'+d+'</th>';
   h+='<th class="g">'+tx("goal")+'</th><th>'+tx("ach")+'</th><th>%</th></tr></thead><tbody>';
   state.habits.forEach(function(name,i){
-    if(!Ni[i])return;
+    if(!Nf[i])return;
     var row=c[i]||[],n=row.length,d;
     h+='<tr><td class="name"><span><span class="nm">'+esc(hname(name))+'</span><span class="bt"><button class="rn" data-ren="'+i+'" aria-label="'+tx("rename")+'">✎</button><button data-del="'+i+'" aria-label="'+tx("del")+'">×</button></span></span></td>';
     for(d=a;d<=b;d++)h+=!on(i,d)?'<td class="off"></td>':'<td class="'+(d==td?"tod":"")+'"><label class="cell"><input type="checkbox" data-h="'+i+'" data-d="'+d+'"'+(row.indexOf(d)>-1?" checked":"")+'></label></td>';
