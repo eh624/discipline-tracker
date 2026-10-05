@@ -140,7 +140,7 @@ synced:"☁ Synced",syncFail:"Not synced yet – saved on this device, will sync
 idRule:"ID: 3–30 chars, letters/numbers/. _ -",confirmOn:"Email confirmation is on in Supabase – turn it off to use IDs",signinHint:"Sign in to sync across devices",
 grpNA:"Groups not available yet:",invCode:"Invite code:",leave:"Leave",member:"Member",today:"Today",thisWeek:"This week",thisMonth:"This month",me:"(me)",
 noGroups:"No groups yet. Create one or join with an invite code. Only completion rates are shared – never your routine names.",
-leaveQ:"Leave this group?",badCode:"Invalid invite code",allRank:"All-time ranking by habit",allRankHint:"Ranked by success rate. Habits tracked for more days rank higher."
+leaveQ:"Leave this group?",badCode:"Invalid invite code",allRank:"All-time ranking by habit",allRankHint:"Ranked by success rate. If tied, the habit tracked for more days comes first."
 },ko:{
 aYear:"연도",aMonth:"월",aPrev:"이전 주",aNext:"다음 주",daily:"일별 달성",goal:"목표",ach:"달성",
 newHabit:"새 습관 (예: 스트레칭)",add:"추가",groups:"그룹",newGroup:"새 그룹 이름",create:"만들기",inviteCode:"초대 코드",join:"참여",refresh:"새로고침",
@@ -154,7 +154,7 @@ synced:"☁ 동기화됨",syncFail:"아직 동기화 안 됨 – 이 기기에 �
 idRule:"ID: 3~30자, 영문·숫자·. _ - 만 가능",confirmOn:"Supabase의 이메일 확인이 켜져 있어요 – ID 가입을 쓰려면 꺼주세요",signinHint:"로그인하면 기기 간 동기화돼요",
 grpNA:"그룹을 아직 쓸 수 없어요:",invCode:"초대 코드:",leave:"나가기",member:"멤버",today:"오늘",thisWeek:"이번 주",thisMonth:"이번 달",me:"(나)",
 noGroups:"아직 그룹이 없어요. 만들거나 초대 코드로 참여해 보세요. 달성률만 공유되고 루틴 이름은 공유되지 않아요.",
-leaveQ:"이 그룹에서 나갈까요?",badCode:"초대 코드가 올바르지 않아요",allRank:"역대 습관별 순위",allRankHint:"성공률 순이고, 분모(기록한 날수)가 클수록 위로 올라가요."
+leaveQ:"이 그룹에서 나갈까요?",badCode:"초대 코드가 올바르지 않아요",allRank:"역대 습관별 순위",allRankHint:"성공률 순이고, 같으면 분모(기록한 날수)가 큰 쪽이 위로 가요."
 }};
 var DH={"Wake up at 7 AM":"아침 7시 기상","6+ hrs focused study":"순공 6시간 이상","Workout":"운동","Bed before 1 AM":"1시 전 취침","Drink 2L+ water":"물 2L 이상","No snacks":"간식 안 먹기","3-min meditation":"3분 명상"};
 var LANG=(function(){try{var l=localStorage.getItem("disc-lang");if(l==="ko"||l==="en")return l}catch(e){}return /^ko/i.test(navigator.language||"")?"ko":"en"})();
@@ -195,9 +195,8 @@ function rangeDays(k){
   while(dt<=end){out.push(new Date(dt));dt.setDate(dt.getDate()+1)}
   return out;
 }
-function wilson(n,g){if(!g)return 0;var z=1.96,z2=z*z,p=n/g;return (p+z2/(2*g)-z*Math.sqrt((p*(1-p)+z2/(4*g))/g))/(1+z2/g)}
 function rankList(k,halfOnly){
-  var days=rangeDays(k),res=[],base=Math.max(TRACK_START,state.joined||0,cy||0),
+  var days=rangeDays(k),map={},order=[],base=Math.max(TRACK_START,state.joined||0,cy||0),
   maxG=days.filter(function(dt){return ymd(dt.getFullYear(),dt.getMonth(),dt.getDate())>=base}).length;
   state.habits.forEach(function(name,i){
     var g=0,n=0;
@@ -206,9 +205,17 @@ function rankList(k,halfOnly){
       if(v<TRACK_START||!act(i,v))return;
       g++;var c=state.checks[y+"-"+(m+1)]||{};if((c[i]||[]).indexOf(d)>-1)n++;
     });
-    if(g&&(!halfOnly||g*2>=maxG))res.push({name:name,g:g,n:n,del:!!state.ends[i],sc:wilson(n,g)});
+    if(!g)return;
+    /* same name = same habit: deleted + re-added entries are merged */
+    var key=name.trim().toLowerCase(),o=map[key];
+    if(!o){o=map[key]={name:name,g:0,n:0,allDel:true};order.push(key)}
+    o.g+=g;o.n+=n;
+    if(!state.ends[i]){o.allDel=false;o.name=name}
   });
-  res.sort(function(a,b){return (b.sc-a.sc)||(b.g-a.g)||(b.n-a.n)});
+  var res=order.map(function(q){var o=map[q];return {name:o.name,g:o.g,n:o.n,del:o.allDel}})
+    .filter(function(x){return !halfOnly||x.g*2>=maxG});
+  /* success rate first, then larger denominator, then more completions */
+  res.sort(function(a,b){return (b.n*a.g-a.n*b.g)||(b.g-a.g)||(b.n-a.n)});
   return res;
 }
 function topList(k){return rankList(k,true).slice(0,5)}
@@ -491,4 +498,3 @@ try{
 <script>if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("/sw.js").catch(function(){})})}</script>
 </body>
 </html>
- 
