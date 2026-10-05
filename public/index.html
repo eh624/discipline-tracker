@@ -4,6 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Discipline Tracker</title>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#141b1e">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Discipline">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiMxZTI0MjgiLz48cGF0aCBkPSJNMzIuMCAxMi41TDMyLjAgNS4wIiBzdHJva2U9IiM3ZmI1YTMiIHN0cm9rZS13aWR0aD0iMy40IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNNDEuOCAxNS4xTDQ1LjUgOC42IiBzdHJva2U9IiM3ZmI1YTMiIHN0cm9rZS13aWR0aD0iMy40IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNNDguOSAyMi4yTDU1LjQgMTguNSIgc3Ryb2tlPSIjN2ZiNWEzIiBzdHJva2Utd2lkdGg9IjMuNCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTUxLjUgMzIuMEw1OS4wIDMyLjAiIHN0cm9rZT0iIzdmYjVhMyIgc3Ryb2tlLXdpZHRoPSIzLjQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik00OC45IDQxLjhMNTUuNCA0NS41IiBzdHJva2U9IiM3ZmI1YTMiIHN0cm9rZS13aWR0aD0iMy40IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNNDEuOCA0OC45TDQ1LjUgNTUuNCIgc3Ryb2tlPSIjN2ZiNWEzIiBzdHJva2Utd2lkdGg9IjMuNCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTMyLjAgNTEuNUwzMi4wIDU5LjAiIHN0cm9rZT0iIzdmYjVhMyIgc3Ryb2tlLXdpZHRoPSIzLjQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0yMi4zIDQ4LjlMMTguNSA1NS40IiBzdHJva2U9IiM3ZmI1YTMiIHN0cm9rZS13aWR0aD0iMy40IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMTUuMSA0MS44TDguNiA0NS41IiBzdHJva2U9IiMzNzQ0NGEiIHN0cm9rZS13aWR0aD0iMy40IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMTIuNSAzMi4wTDUuMCAzMi4wIiBzdHJva2U9IiMzNzQ0NGEiIHN0cm9rZS13aWR0aD0iMy40IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMTUuMSAyMi4yTDguNiAxOC41IiBzdHJva2U9IiMzNzQ0NGEiIHN0cm9rZS13aWR0aD0iMy40IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMjIuMiAxNS4xTDE4LjUgOC42IiBzdHJva2U9IiMzNzQ0NGEiIHN0cm9rZS13aWR0aD0iMy40IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMjEuNSAzM0wyOSA0MC41TDQzIDI0LjUiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzdmYjVhMyIgc3Ryb2tlLXdpZHRoPSI1LjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjwvc3ZnPg==">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
@@ -128,7 +135,7 @@ habit:"Habit",doneDay:"Done per day",rename:"Rename",del:"Delete",renPrompt:"Ren
 delConfirm:'Delete "{0}"?\nPast records are kept; it is removed from today onward.',
 tWeek:"Week",tMonth:"Month",tYear:"Year",tAll:"All",deleted:"(deleted)",noRec:"No records yet.",
 id:"ID",pw:"Password (6+ chars)",signin:"Sign in",signup:"Sign up",signout:"Sign out",
-synced:"☁ Synced",syncFail:"Sync failed – saved on this device only",noSignout:"Sync failed – not signed out, to avoid losing data",
+synced:"☁ Synced",syncFail:"Not synced yet – saved on this device, will sync automatically",noSignout:"Sync failed – not signed out, to avoid losing data",
 idRule:"ID: 3–30 chars, letters/numbers/. _ -",confirmOn:"Email confirmation is on in Supabase – turn it off to use IDs",signinHint:"Sign in to sync across devices",
 grpNA:"Groups not available yet:",invCode:"Invite code:",leave:"Leave",member:"Member",today:"Today",thisWeek:"This week",thisMonth:"This month",me:"(me)",
 noGroups:"No groups yet. Create one or join with an invite code. Only completion rates are shared – never your routine names.",
@@ -142,7 +149,7 @@ habit:"습관",doneDay:"일별 완료",rename:"이름 수정",del:"삭제",renPr
 delConfirm:'"{0}" 삭제할까요?\n지난 기록은 유지되고, 오늘부터 사라져요.',
 tWeek:"이번 주",tMonth:"이번 달",tYear:"올해",tAll:"전체",deleted:"(삭제됨)",noRec:"아직 기록이 없어요.",
 id:"ID",pw:"비밀번호 (6자 이상)",signin:"로그인",signup:"가입",signout:"로그아웃",
-synced:"☁ 동기화됨",syncFail:"동기화 실패 – 이 기기에만 저장됨",noSignout:"동기화 실패 – 데이터 보호를 위해 로그아웃하지 않았어요",
+synced:"☁ 동기화됨",syncFail:"아직 동기화 안 됨 – 이 기기에 저장됨, 연결되면 자동으로 올라가요",noSignout:"동기화 실패 – 데이터 보호를 위해 로그아웃하지 않았어요",
 idRule:"ID: 3~30자, 영문·숫자·. _ - 만 가능",confirmOn:"Supabase의 이메일 확인이 켜져 있어요 – ID 가입을 쓰려면 꺼주세요",signinHint:"로그인하면 기기 간 동기화돼요",
 grpNA:"그룹을 아직 쓸 수 없어요:",invCode:"초대 코드:",leave:"나가기",member:"멤버",today:"오늘",thisWeek:"이번 주",thisMonth:"이번 달",me:"(나)",
 noGroups:"아직 그룹이 없어요. 만들거나 초대 코드로 참여해 보세요. 달성률만 공유되고 루틴 이름은 공유되지 않아요.",
@@ -171,9 +178,9 @@ var sb=null,uid=null,tmr=null,curSess=null;
 function setSync(t){var e=document.getElementById("sync");if(e)e.textContent=t}
 function push(){
   if(!sb||!uid)return;clearTimeout(tmr);
-  tmr=setTimeout(function(){tmr=null;
+  tmr=setTimeout(function(){tmr=null;var v=dv;
     sb.from("tracker").upsert({user_id:uid,data:{habits:state.habits,checks:state.checks,starts:state.starts,ends:state.ends,joined:state.joined||0},updated_at:new Date().toISOString()})
-      .then(function(r){setSync(r.error?tx("syncFail"):tx("synced"));if(!r.error)pushStats().then(function(){if(hasG)loadGroups()})},function(){setSync(tx("syncFail"))});
+      .then(function(r){setSync(r.error?tx("syncFail"):tx("synced"));if(!r.error&&v===dv)clearDirty();if(!r.error)pushStats().then(function(){if(hasG)loadGroups()})},function(){setSync(tx("syncFail"))});
   },400);
 }
 var TRACK_START=20260930,hasG=false,me="",cy=0,tpk="month",wmode="week";
@@ -236,7 +243,11 @@ function pushStats(){
   var q=myStats();
   return sb.from("stats").upsert({user_id:uid,t_goal:q.t[0],t_done:q.t[1],m_goal:q.m[0],m_done:q.m[1],w_goal:q.w[0],w_done:q.w[1],updated_at:new Date().toISOString()}).then(function(){},function(){});
 }
-function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}push()}
+var dv=0;
+function isDirty(){try{return localStorage.getItem("disc-dirty")==="1"}catch(e){return false}}
+function setDirty(){dv++;try{localStorage.setItem("disc-dirty","1")}catch(e){}}
+function clearDirty(){try{localStorage.removeItem("disc-dirty")}catch(e){}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}if(uid)setDirty();push()}
 function $(i){return document.getElementById(i)}
 var MIN=new Date(2026,8,1),cur=new Date();cur.setDate(1);if(cur<MIN)cur=new Date(MIN);
 var wk=null,MN=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
@@ -350,7 +361,7 @@ function renderAuth(sess){
       }catch(e){setSync(tx("noSignout"));return}
       await sb.auth.signOut();
       $("grp").style.display="none";$("glist").innerHTML="";hasG=false;
-      try{localStorage.removeItem(KEY)}catch(e){}
+      try{localStorage.removeItem(KEY);localStorage.removeItem("disc-dirty")}catch(e){}
       state={habits:["Wake up at 7 AM","6+ hrs focused study","Workout","Bed before 1 AM","Drink 2L+ water","No snacks","3-min meditation"],checks:{},starts:[],ends:[]};
       norm();wk=null;render();
     };
@@ -361,14 +372,37 @@ function renderAuth(sess){
       if(r.error)setSync(r.error.message);else if(!r.data.session)setSync(tx("confirmOn"))})};
   }
 }
+function mergeState(a,b){
+  var n=Math.max(a.habits.length,b.habits.length),o={habits:[],checks:{},starts:[],ends:[],joined:0},i;
+  function mn(x,y){x=x||0;y=y||0;return x&&y?Math.min(x,y):(x||y)}
+  for(i=0;i<n;i++){
+    o.habits[i]=a.habits[i]!=null?a.habits[i]:b.habits[i];
+    o.starts[i]=mn((a.starts||[])[i],(b.starts||[])[i]);
+    o.ends[i]=mn((a.ends||[])[i],(b.ends||[])[i]);
+  }
+  o.joined=mn(a.joined,b.joined);
+  var ca=a.checks||{},cb=b.checks||{},keys={};
+  Object.keys(ca).concat(Object.keys(cb)).forEach(function(k){keys[k]=1});
+  Object.keys(keys).forEach(function(k){
+    var ma=ca[k]||{},mb=cb[k]||{},hs={};
+    Object.keys(ma).concat(Object.keys(mb)).forEach(function(h){hs[h]=1});
+    o.checks[k]={};
+    Object.keys(hs).forEach(function(h){
+      var u=(ma[h]||[]).concat(mb[h]||[]).filter(function(d,j,arr){return arr.indexOf(d)===j});
+      u.sort(function(x,y){return x-y});o.checks[k][h]=u;
+    });
+  });
+  return o;
+}
 async function pull(){
   var r=await sb.from("tracker").select("data").eq("user_id",uid).maybeSingle();
   if(r.error){setSync(tx("syncFail"));return}
   var d=r.data&&r.data.data;
   if(d&&d.habits){
-    state={habits:d.habits,checks:d.checks||{},starts:d.starts||[],ends:d.ends||[],joined:d.joined||0};norm();
+    var srv={habits:d.habits,checks:d.checks||{},starts:d.starts||[],ends:d.ends||[],joined:d.joined||0},wasDirty=isDirty();
+    state=wasDirty?mergeState(state,srv):srv;norm();
     try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}
-    render();
+    render();if(wasDirty)push();
   }else{
     var any=Object.keys(state.checks).some(function(k){return Object.keys(state.checks[k]).some(function(j){return state.checks[k][j].length})});
     if(!any&&cy){state.joined=cy;try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}render()}
@@ -440,9 +474,11 @@ try{
       else{setSync(tx("signinHint"));$("grp").style.display="none";$("glist").innerHTML="";hasG=false}
     });
     document.addEventListener("visibilitychange",function(){if(!document.hidden&&uid&&!tmr)pull().catch(function(){})});
+    window.addEventListener("online",function(){if(uid&&!tmr)pull().catch(function(){})});
   }else renderAuth(null);
 }catch(e){sb=null;renderAuth(null)}
 </script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("/sw.js").catch(function(){})})}</script>
 </body>
 </html>
  
