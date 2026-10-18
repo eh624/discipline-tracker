@@ -135,7 +135,7 @@ aYear:"Year",aMonth:"Month",aPrev:"Previous week",aNext:"Next week",daily:"Daily
 newHabit:"New habit (e.g. Stretching)",add:"Add",groups:"Groups",newGroup:"New group name",create:"Create",inviteCode:"Invite code",join:"Join",refresh:"Refresh",
 weekly:"Weekly",monthly:"Monthly",totM:"Total stats (monthly)",totY:"Total stats (year)",
 dayN:"Day {0}",daysN:"Days {0}–{1}",dayTip:"Day {0}: {1}/{2}",wN:"W{0}",
-habit:"Habit",doneDay:"Done per day",rename:"Rename",del:"Delete",vAll:"All",vRem:"Remaining",deldTag:"deleted",delList:"Deleted routines ({0})",delOn:"deleted {0}-{1}-{2}",restore:"Restore",resConfirm:'Restore "{0}"?\nIt shows again from today; past records stay as they are.',renPrompt:"Rename routine",
+habit:"Habit",doneDay:"Done per day",rename:"Rename",del:"Delete",vAll:"All",vRem:"Remaining",deldTag:"deleted",delList:"Deleted routines ({0})",delOn:"deleted {0}-{1}-{2}",restore:"Restore",purge:"Delete forever",purgeConfirm:'Permanently delete "{0}" and all its records?\nThis cannot be undone.',resConfirm:'Restore "{0}"?\nIt shows again from today; past records stay as they are.',renPrompt:"Rename routine",
 delConfirm:'Delete "{0}"?\nPast records are kept; it is removed from today onward.',
 tWeek:"Week",tMonth:"Month",tYear:"Year",tAll:"All",deleted:"(deleted)",noRec:"No records yet.",
 id:"ID",pw:"Password (6+ chars)",signin:"Sign in",signup:"Sign up",signout:"Sign out",
@@ -149,7 +149,7 @@ aYear:"연도",aMonth:"월",aPrev:"이전 주",aNext:"다음 주",daily:"일별 
 newHabit:"새 습관 (예: 스트레칭)",add:"추가",groups:"그룹",newGroup:"새 그룹 이름",create:"만들기",inviteCode:"초대 코드",join:"참여",refresh:"새로고침",
 weekly:"주별",monthly:"월별",totM:"전체 통계 (월간)",totY:"전체 통계 (연간)",
 dayN:"{0}일",daysN:"{0}–{1}일",dayTip:"{0}일: {1}/{2}",wN:"{0}주",
-habit:"습관",doneDay:"일별 완료",rename:"이름 수정",del:"삭제",vAll:"전체",vRem:"남은 루틴",deldTag:"삭제됨",delList:"삭제한 루틴 ({0})",delOn:"{0}.{1}.{2} 삭제",restore:"복구",resConfirm:'"{0}" 복구할까요?\n오늘부터 다시 표시되고, 지난 기록은 그대로 유지돼요.',renPrompt:"루틴 이름 수정",
+habit:"습관",doneDay:"일별 완료",rename:"이름 수정",del:"삭제",vAll:"전체",vRem:"남은 루틴",deldTag:"삭제됨",delList:"삭제한 루틴 ({0})",delOn:"{0}.{1}.{2} 삭제",restore:"복구",purge:"영구 삭제",purgeConfirm:'"{0}" 루틴과 모든 기록을 영구 삭제할까요?\n되돌릴 수 없어요.',resConfirm:'"{0}" 복구할까요?\n오늘부터 다시 표시되고, 지난 기록은 그대로 유지돼요.',renPrompt:"루틴 이름 수정",
 delConfirm:'"{0}" 삭제할까요?\n지난 기록은 유지되고, 오늘부터 사라져요.',
 tWeek:"이번 주",tMonth:"이번 달",tYear:"올해",tAll:"전체",deleted:"(삭제됨)",noRec:"아직 기록이 없어요.",
 id:"ID",pw:"비밀번호 (6자 이상)",signin:"로그인",signup:"가입",signout:"로그아웃",
@@ -174,7 +174,7 @@ applyLang();
 var KEY="disc-tracker-v4",state={habits:["Wake up at 7 AM","6+ hrs focused study","Workout","Bed before 1 AM","Drink 2L+ water","No snacks","3-min meditation"],checks:{},starts:[],ends:[]};
 try{var s=localStorage.getItem(KEY);if(s)state=JSON.parse(s)}catch(e){}
 var KO={"아침 7시 기상":"Wake up at 7 AM","순공 6시간 이상":"6+ hrs focused study","운동":"Workout","1시 전 취침":"Bed before 1 AM","물 2L 이상":"Drink 2L+ water","간식 안 먹기":"No snacks","3분 명상":"3-min meditation"};
-function norm(){state.habits=(state.habits||[]).map(function(x){return KO[x]||x});state.checks=state.checks||{};state.starts=state.starts||[];state.ends=state.ends||[];state.joined=state.joined||0;while(state.starts.length<state.habits.length)state.starts.push(0);while(state.ends.length<state.habits.length)state.ends.push(0)}
+function norm(){state.habits=(state.habits||[]).map(function(x){return KO[x]||x});state.checks=state.checks||{};state.starts=state.starts||[];state.ends=state.ends||[];state.joined=state.joined||0;state.purged=state.purged||[];while(state.starts.length<state.habits.length)state.starts.push(0);while(state.ends.length<state.habits.length)state.ends.push(0)}
 norm();
 function ymd(y,m,d){return y*10000+(m+1)*100+d}
 var SB_URL="https://ewqqmemaumyzkdpactbp.supabase.co",SB_KEY="sb_publishable_MOY2-ApfVch3xBzZuJDuGA_cagNLn6C";/* <- paste your Supabase Project URL and anon public key here */
@@ -183,7 +183,7 @@ function setSync(t){var e=document.getElementById("sync");if(e)e.textContent=t}
 function push(){
   if(!sb||!uid)return;clearTimeout(tmr);
   tmr=setTimeout(function(){tmr=null;var v=dv;
-    sb.from("tracker").upsert({user_id:uid,data:{habits:state.habits,checks:state.checks,starts:state.starts,ends:state.ends,joined:state.joined||0},updated_at:new Date().toISOString()})
+    sb.from("tracker").upsert({user_id:uid,data:{habits:state.habits,checks:state.checks,starts:state.starts,ends:state.ends,joined:state.joined||0,purged:state.purged||[]},updated_at:new Date().toISOString()})
       .then(function(r){setSync(r.error?tx("syncFail"):tx("synced"));if(!r.error&&v===dv)clearDirty();if(!r.error)pushStats().then(function(){if(hasG)loadGroups()})},function(){setSync(tx("syncFail"))});
   },400);
 }
@@ -239,7 +239,7 @@ function renderTop(){
 }
 $("wseg").addEventListener("click",function(e){var b=e.target.closest("button");if(!b||!b.dataset.w)return;wmode=b.dataset.w;render()});
 $("tp").addEventListener("click",function(e){var b=e.target.closest("button");if(!b||!b.dataset.k)return;tpk=b.dataset.k;renderTop()});
-function act(i,v){var e=state.ends[i]||0;return v>=Math.max(state.joined||0,state.starts[i]||0)&&(!e||v<e)}
+function act(i,v){if(isPur(i))return false;var e=state.ends[i]||0;return v>=Math.max(state.joined||0,state.starts[i]||0)&&(!e||v<e)}
 function calc(days,f){
   var g=0,n=0;
   days.forEach(function(dt){
@@ -279,20 +279,21 @@ function mob(){return window.matchMedia("(max-width:640px)").matches}
 function esc(t){return t.replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 var VIEW="all";try{if(localStorage.getItem("disc-view")==="active")VIEW="active"}catch(x){}
 function isDel(i){return state.ends[i]>0}
-function vis(i){return VIEW!=="active"||!isDel(i)}
+function isPur(i){return (state.purged||[]).indexOf(i)>-1}
+function vis(i){if(isPur(i))return false;return VIEW!=="active"||!isDel(i)}
 function nkey(s){return String(s).trim().toLowerCase()}
-function canRes(i){if(!isDel(i))return false;var k=nkey(state.habits[i]);for(var j=0;j<state.habits.length;j++)if(j!==i&&!isDel(j)&&nkey(state.habits[j])===k)return false;return true}
+function canRes(i){if(!isDel(i)||isPur(i))return false;var k=nkey(state.habits[i]);for(var j=0;j<state.habits.length;j++)if(j!==i&&!isDel(j)&&nkey(state.habits[j])===k)return false;return true}
 function renderDeleted(){
   var el=$("deld"),open=el.open,list=[],i,j;
   for(i=0;i<state.habits.length;i++){
     if(!canRes(i))continue;
-    var later=false;for(j=i+1;j<state.habits.length;j++)if(isDel(j)&&nkey(state.habits[j])===nkey(state.habits[i]))later=true;
+    var later=false;for(j=i+1;j<state.habits.length;j++)if(isDel(j)&&!isPur(j)&&nkey(state.habits[j])===nkey(state.habits[i]))later=true;
     if(!later)list.push(i);
   }
   if(!list.length){el.style.display="none";return}
   el.style.display="";
   var h='<summary>'+tx("delList",list.length)+'</summary>';
-  list.forEach(function(i){var e=state.ends[i];h+='<div class="dl"><span>'+esc(hname(state.habits[i]))+'<small>'+tx("delOn",Math.floor(e/10000),Math.floor(e%10000/100),e%100)+'</small></span><button data-res="'+i+'">↺ '+tx("restore")+'</button></div>'});
+  list.forEach(function(i){var e=state.ends[i];h+='<div class="dl"><span>'+esc(hname(state.habits[i]))+'<small>'+tx("delOn",Math.floor(e/10000),Math.floor(e%10000/100),e%100)+'</small></span><span style="display:flex;gap:6px;flex:none"><button data-res="'+i+'">↺ '+tx("restore")+'</button><button data-pg="'+i+'" style="color:#c0392b">'+tx("purge")+'</button></span></div>'});
   el.innerHTML=h;el.open=open;
 }
 function render(){
@@ -383,7 +384,19 @@ function doRestore(i){
   state.habits.push(state.habits[i]);state.starts[L]=ymd(n.getFullYear(),n.getMonth(),n.getDate());state.ends[L]=0;
   save();render();
 }
-$("deld").addEventListener("click",function(e){var b=e.target.closest("button");if(b&&b.dataset.res!=null)doRestore(+b.dataset.res)});
+function doPurge(i){
+  if(!canRes(i))return;
+  if(!confirm(tx("purgeConfirm",hname(state.habits[i]))))return;
+  var k=nkey(state.habits[i]);state.purged=state.purged||[];
+  state.habits.forEach(function(h,j){
+    if(isDel(j)&&!isPur(j)&&nkey(h)===k){
+      state.purged.push(j);
+      Object.keys(state.checks).forEach(function(m){if(state.checks[m])delete state.checks[m][j]});
+    }
+  });
+  save();render();
+}
+$("deld").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;if(b.dataset.res!=null)doRestore(+b.dataset.res);else if(b.dataset.pg!=null)doPurge(+b.dataset.pg)});
 $("newh").addEventListener("keydown",function(e){if(e.key==="Enter")add()});
 $("wp").onclick=function(){if(wk>0)wk--;else if(!isSep()){cur.setMonth(cur.getMonth()-1);wk=pg()-1}render()};
 $("wn").onclick=function(){if(wk<pg()-1)wk++;else{cur.setMonth(cur.getMonth()+1);wk=0}render()};
@@ -407,7 +420,7 @@ function renderAuth(sess){
     $("so").onclick=async function(){
       clearTimeout(tmr);tmr=null;
       try{
-        var f=await sb.from("tracker").upsert({user_id:uid,data:{habits:state.habits,checks:state.checks,starts:state.starts,ends:state.ends,joined:state.joined||0},updated_at:new Date().toISOString()});
+        var f=await sb.from("tracker").upsert({user_id:uid,data:{habits:state.habits,checks:state.checks,starts:state.starts,ends:state.ends,joined:state.joined||0,purged:state.purged||[]},updated_at:new Date().toISOString()});
         if(f.error)throw f.error;
       }catch(e){setSync(tx("noSignout"));return}
       await sb.auth.signOut();
@@ -424,7 +437,7 @@ function renderAuth(sess){
   }
 }
 function mergeState(a,b){
-  var n=Math.max(a.habits.length,b.habits.length),o={habits:[],checks:{},starts:[],ends:[],joined:0},i;
+  var n=Math.max(a.habits.length,b.habits.length),o={habits:[],checks:{},starts:[],ends:[],joined:0,purged:[]},i;
   function mn(x,y){x=x||0;y=y||0;return x&&y?Math.min(x,y):(x||y)}
   for(i=0;i<n;i++){
     o.habits[i]=a.habits[i]!=null?a.habits[i]:b.habits[i];
@@ -432,6 +445,7 @@ function mergeState(a,b){
     o.ends[i]=mn((a.ends||[])[i],(b.ends||[])[i]);
   }
   o.joined=mn(a.joined,b.joined);
+  o.purged=(a.purged||[]).concat(b.purged||[]).filter(function(x,j,arr){return arr.indexOf(x)===j});
   var ca=a.checks||{},cb=b.checks||{},keys={};
   Object.keys(ca).concat(Object.keys(cb)).forEach(function(k){keys[k]=1});
   Object.keys(keys).forEach(function(k){
@@ -450,7 +464,7 @@ async function pull(){
   if(r.error){setSync(tx("syncFail"));return}
   var d=r.data&&r.data.data;
   if(d&&d.habits){
-    var srv={habits:d.habits,checks:d.checks||{},starts:d.starts||[],ends:d.ends||[],joined:d.joined||0},wasDirty=isDirty();
+    var srv={habits:d.habits,checks:d.checks||{},starts:d.starts||[],ends:d.ends||[],joined:d.joined||0,purged:d.purged||[]},wasDirty=isDirty();
     state=wasDirty?mergeState(state,srv):srv;norm();
     try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}
     render();if(wasDirty)push();
