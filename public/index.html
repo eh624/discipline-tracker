@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="version" content="1.4.0">
+<meta name="version" content="1.5.0">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Discipline Tracker</title>
 <link rel="manifest" href="/manifest.json">
@@ -103,11 +103,32 @@ table{min-width:0}
 }
 .hd{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}.brand{display:flex;align-items:center;gap:10px;min-width:0}.brand svg{width:92px;height:92px;flex:none}.tf{fill:var(--on)}.brand span{font-family:"Gowun Batang",serif;font-size:20px;font-weight:700;letter-spacing:.02em;white-space:nowrap}.t1{stroke:var(--on)}.t0{stroke:var(--line)}@media (max-width:640px){.brand svg{width:72px;height:72px}.brand span{font-size:15px;white-space:normal;line-height:1.2}}
 .atd{margin-top:6px;border-top:1px solid var(--line);padding-top:6px}.atd summary{cursor:pointer;font-size:13px;color:var(--mute);padding:4px 0}.atd[open] summary{color:var(--ink)}.atd .gh{margin:4px 0}
+.tabs{display:flex;gap:6px;margin-bottom:14px;overflow-x:auto;padding-bottom:2px}
+.tabs .tb{display:flex;align-items:center;border:1px solid var(--line);background:var(--card);border-radius:999px;flex:none}
+.tabs .tb.on{background:var(--on);border-color:var(--on)}.tabs .tb.on button{color:#fff}
+.tabs button{font:inherit;font-size:13px;border:0;background:none;color:var(--ink);padding:7px 14px;cursor:pointer;white-space:nowrap}
+.tabs button.x{padding:7px 10px 7px 0;color:var(--mute);font-size:14px}
+body.alt .sec,body.alt #lay{display:none!important}
+.np{display:none}.np.on{display:block}
+.np textarea,.np input{width:100%;font:inherit;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);margin:4px 0;resize:vertical}
+.np textarea.q{font-family:"Gowun Batang",serif;font-size:17px;line-height:1.5}
+.dnav{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.dnav b{font-family:"Gowun Batang",serif;font-size:16px}
+.dnav button{font:inherit;font-size:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:5px 12px;cursor:pointer}
+.nst{font-size:11px;color:var(--mute);min-height:15px}
+.ent{padding:10px 2px;border-top:1px solid var(--line);cursor:pointer}
+.ent .dt{font-size:11px;color:var(--mute)}
+.ent .qt{font-family:"Gowun Batang",serif;font-size:15px;margin:2px 0}
+.ent .sr{font-size:12px;color:var(--mute)}
+.ent .jt{font-size:13px;white-space:pre-wrap;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="hd"><div class="brand"><svg viewBox="0 0 64 64" role="img" aria-label="Discipline Tracker"><path d="M32.00 9.50L32.00 3.50" class="t1" stroke-width="1.8" stroke-linecap="round"/><path d="M40.61 11.21L42.91 5.67" class="t1" stroke-width="1.8" stroke-linecap="round"/><path d="M47.91 16.09L52.15 11.85" class="t1" stroke-width="1.8" stroke-linecap="round"/><path d="M52.79 23.39L58.33 21.09" class="t1" stroke-width="1.8" stroke-linecap="round"/><path d="M54.50 32.00L60.50 32.00" class="t1" stroke-width="1.8" stroke-linecap="round"/><path d="M52.79 40.61L58.33 42.91" class="t1" stroke-width="1.8" stroke-linecap="round"/><path d="M47.91 47.91L52.15 52.15" class="t1" stroke-width="1.8" stroke-linecap="round"/><path d="M40.61 52.79L42.91 58.33" class="t1" stroke-width="1.8" stroke-linecap="round"/><path d="M32.00 54.50L32.00 60.50" class="t1" stroke-width="1.8" stroke-linecap="round"/><path d="M23.39 52.79L21.09 58.33" class="t1" stroke-width="1.8" stroke-linecap="round"/><path d="M16.09 47.91L11.85 52.15" class="t1" stroke-width="1.8" stroke-linecap="round"/><path d="M11.21 40.61L5.67 42.91" class="t0" stroke-width="1.8" stroke-linecap="round"/><path d="M9.50 32.00L3.50 32.00" class="t0" stroke-width="1.8" stroke-linecap="round"/><path d="M11.21 23.39L5.67 21.09" class="t0" stroke-width="1.8" stroke-linecap="round"/><path d="M16.09 16.09L11.85 11.85" class="t0" stroke-width="1.8" stroke-linecap="round"/><path d="M23.39 11.21L21.09 5.67" class="t0" stroke-width="1.8" stroke-linecap="round"/><path d="M24.5 28L29 32.5L39.5 21.5" fill="none" class="t1" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M16.14 40.52V43.13H16.69Q17.38 43.13 17.71 42.81Q18.03 42.50 18.03 41.82Q18.03 41.15 17.71 40.83Q17.38 40.52 16.69 40.52ZM15.69 40.15H16.62Q17.59 40.15 18.05 40.55Q18.51 40.96 18.51 41.82Q18.51 42.69 18.05 43.09Q17.59 43.50 16.62 43.50H15.69Z M20.13 40.15H20.58V43.50H20.13Z M24.40 40.26V40.70Q24.14 40.58 23.91 40.51Q23.68 40.45 23.47 40.45Q23.10 40.45 22.89 40.60Q22.69 40.74 22.69 41.01Q22.69 41.23 22.83 41.34Q22.96 41.46 23.33 41.53L23.61 41.58Q24.12 41.68 24.36 41.92Q24.60 42.17 24.60 42.57Q24.60 43.06 24.27 43.31Q23.94 43.57 23.31 43.57Q23.08 43.57 22.81 43.51Q22.54 43.46 22.25 43.35V42.88Q22.53 43.04 22.79 43.12Q23.06 43.20 23.31 43.20Q23.70 43.20 23.91 43.04Q24.12 42.89 24.12 42.61Q24.12 42.36 23.97 42.22Q23.82 42.08 23.48 42.01L23.20 41.96Q22.69 41.86 22.46 41.64Q22.24 41.43 22.24 41.04Q22.24 40.60 22.55 40.34Q22.86 40.09 23.41 40.09Q23.65 40.09 23.90 40.13Q24.14 40.17 24.40 40.26Z M28.72 40.40V40.88Q28.49 40.67 28.23 40.56Q27.97 40.46 27.68 40.46Q27.10 40.46 26.80 40.81Q26.49 41.16 26.49 41.83Q26.49 42.49 26.80 42.84Q27.10 43.19 27.68 43.19Q27.97 43.19 28.23 43.09Q28.49 42.98 28.72 42.77V43.24Q28.48 43.40 28.21 43.48Q27.95 43.57 27.65 43.57Q26.89 43.57 26.45 43.10Q26.01 42.63 26.01 41.83Q26.01 41.02 26.45 40.55Q26.89 40.09 27.65 40.09Q27.95 40.09 28.22 40.17Q28.48 40.25 28.72 40.40Z M30.32 40.15H30.77V43.50H30.32Z M33.03 40.52V41.78H33.60Q33.92 41.78 34.09 41.62Q34.26 41.45 34.26 41.15Q34.26 40.85 34.09 40.68Q33.92 40.52 33.60 40.52ZM32.57 40.15H33.60Q34.16 40.15 34.45 40.40Q34.74 40.66 34.74 41.15Q34.74 41.64 34.45 41.90Q34.16 42.15 33.60 42.15H33.03V43.50H32.57Z M36.25 40.15H36.70V43.12H38.34V43.50H36.25Z M39.71 40.15H40.17V43.50H39.71Z M41.97 40.15H42.58L44.07 42.95V40.15H44.51V43.50H43.90L42.41 40.69V43.50H41.97Z M46.31 40.15H48.43V40.53H46.76V41.52H48.36V41.90H46.76V43.12H48.47V43.50H46.31Z" class="tf" fill-opacity=".85"/></svg><span>Discipline Tracker</span></div><div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end"><div class="seg"><button id="layb" style="border-radius:8px"></button></div><div class="seg" id="lang"></div></div></div>
+  <div class="tabs" id="tabs"></div>
+  <div class="np card" id="pq"></div>
+  <div class="np card" id="pj"></div>
   <div class="card" id="lay" style="display:none;margin-bottom:14px;justify-content:flex-start"></div>
   <div class="top sec" data-sec="stats">
     <div class="card"><select id="yr" data-ia="aYear"></select><select id="mo" data-ia="aMonth"></select></div>
@@ -132,7 +153,7 @@ table{min-width:0}
     <div class="add" style="flex-wrap:wrap"><input id="gcode" data-ip="inviteCode" placeholder="Invite code" maxlength="12" autocapitalize="characters"><button id="gjoin" data-i="join">Join</button><button id="gref" data-i="refresh">Refresh</button></div>
   </div>
   <div id="sync" style="text-align:center;font-size:11px;color:var(--mute);margin-top:10px"></div>
-  <div id="ver" style="text-align:center;font-size:10px;color:var(--mute);opacity:.7;margin-top:4px">v1.4.0</div>
+  <div id="ver" style="text-align:center;font-size:10px;color:var(--mute);opacity:.7;margin-top:4px">v1.5.0</div>
 </div>
 <script>
 var TR={en:{
@@ -148,7 +169,7 @@ synced:"☁ Synced",syncFail:"Not synced yet – saved on this device, will sync
 idRule:"ID: 3–30 chars, letters/numbers/. _ -",confirmOn:"Email confirmation is on in Supabase – turn it off to use IDs",signinHint:"Sign in to sync across devices",
 grpNA:"Groups not available yet:",invCode:"Invite code:",leave:"Leave",member:"Member",today:"Today",thisWeek:"This week",thisMonth:"This month",me:"(me)",
 noGroups:"No groups yet. Create one or join with an invite code. Only completion rates are shared – never your routine names.",
-leaveQ:"Leave this group?",badCode:"Invalid invite code",allRank:"All-time ranking by habit",allRankHint:"Ranked by success rate. If tied, the habit tracked for more days comes first.",layout:"⇅ Layout",layoutT:"Section order",secStats:"Stats cards",secTop:"Top 5 / ranking",secRout:"Routine table",secGrp:"Groups",reorder:"↕ Reorder",done:"Done",up:"Move up",down:"Move down",statFail:"Group stats upload failed:",ago:"updated {0}d ago"
+leaveQ:"Leave this group?",badCode:"Invalid invite code",allRank:"All-time ranking by habit",allRankHint:"Ranked by success rate. If tied, the habit tracked for more days comes first.",tMain:"Tracker",tQuote:"Quote of the Day",tJournal:"Daily Journal",hideTab:"Hide this tab?\nYour entries are kept – you can bring it back from ⇅ Layout.",hidTabs:"Hidden tabs",show:"Show",qText:"Today's quote",qSrc:"Source (book, person…)",qWhy:"Why it stayed with me (optional)",jText:"How was your day? (3+ sentences)",sentN:"{0} sentences",saved:"Saved · checked off",past:"Past entries ({0})",todayB:"Today",layout:"⇅ Layout",layoutT:"Section order",secStats:"Stats cards",secTop:"Top 5 / ranking",secRout:"Routine table",secGrp:"Groups",reorder:"↕ Reorder",done:"Done",up:"Move up",down:"Move down",statFail:"Group stats upload failed:",ago:"updated {0}d ago"
 },ko:{
 aYear:"연도",aMonth:"월",aPrev:"이전 주",aNext:"다음 주",daily:"일별 달성",goal:"목표",ach:"달성",
 newHabit:"새 습관 (예: 스트레칭)",add:"추가",groups:"그룹",newGroup:"새 그룹 이름",create:"만들기",inviteCode:"초대 코드",join:"참여",refresh:"새로고침",
@@ -162,9 +183,9 @@ synced:"☁ 동기화됨",syncFail:"아직 동기화 안 됨 – 이 기기에 �
 idRule:"ID: 3~30자, 영문·숫자·. _ - 만 가능",confirmOn:"Supabase의 이메일 확인이 켜져 있어요 – ID 가입을 쓰려면 꺼주세요",signinHint:"로그인하면 기기 간 동기화돼요",
 grpNA:"그룹을 아직 쓸 수 없어요:",invCode:"초대 코드:",leave:"나가기",member:"멤버",today:"오늘",thisWeek:"이번 주",thisMonth:"이번 달",me:"(나)",
 noGroups:"아직 그룹이 없어요. 만들거나 초대 코드로 참여해 보세요. 달성률만 공유되고 루틴 이름은 공유되지 않아요.",
-leaveQ:"이 그룹에서 나갈까요?",badCode:"초대 코드가 올바르지 않아요",allRank:"역대 습관별 순위",allRankHint:"성공률 순이고, 같으면 분모(기록한 날수)가 큰 쪽이 위로 가요.",layout:"⇅ 화면 순서",layoutT:"화면 구역 순서",secStats:"통계 카드",secTop:"Top 5 / 순위",secRout:"루틴 표",secGrp:"그룹",reorder:"↕ 순서 변경",done:"완료",up:"위로",down:"아래로",statFail:"그룹 통계 업로드 실패:",ago:"{0}일 전 업데이트"
+leaveQ:"이 그룹에서 나갈까요?",badCode:"초대 코드가 올바르지 않아요",allRank:"역대 습관별 순위",allRankHint:"성공률 순이고, 같으면 분모(기록한 날수)가 큰 쪽이 위로 가요.",tMain:"트래커",tQuote:"오늘의 문장",tJournal:"하루 일기",hideTab:"이 탭을 숨길까요?\n기록은 그대로 남고, ⇅ 화면 순서에서 다시 켤 수 있어요.",hidTabs:"숨긴 탭",show:"다시 보이기",qText:"오늘의 문장",qSrc:"출처 (책, 사람 등)",qWhy:"인상 깊었던 이유 (선택)",jText:"오늘 하루는 어땠나요? (최소 3문장)",sentN:"{0}문장",saved:"저장됨 · 체크 완료",past:"지난 기록 ({0})",todayB:"오늘",layout:"⇅ 화면 순서",layoutT:"화면 구역 순서",secStats:"통계 카드",secTop:"Top 5 / 순위",secRout:"루틴 표",secGrp:"그룹",reorder:"↕ 순서 변경",done:"완료",up:"위로",down:"아래로",statFail:"그룹 통계 업로드 실패:",ago:"{0}일 전 업데이트"
 }};
-var DH={"Wake up at 7 AM":"아침 7시 기상","6+ hrs focused study":"순공 6시간 이상","Workout":"운동","Bed before 1 AM":"1시 전 취침","Drink 2L+ water":"물 2L 이상","No snacks":"간식 안 먹기","3-min meditation":"3분 명상"};
+var DH={"Wake up at 7 AM":"아침 7시 기상","6+ hrs focused study":"순공 6시간 이상","Workout":"운동","Bed before 1 AM":"1시 전 취침","Drink 2L+ water":"물 2L 이상","No snacks":"간식 안 먹기","3-min meditation":"3분 명상","Quote of the Day":"오늘의 문장","Daily Journal":"하루 일기"};
 var LANG=(function(){try{var l=localStorage.getItem("disc-lang");if(l==="ko"||l==="en")return l}catch(e){}return /^ko/i.test(navigator.language||"")?"ko":"en"})();
 function tx(k){var s=(TR[LANG]&&TR[LANG][k])||TR.en[k]||k;for(var i=1;i<arguments.length;i++)s=s.split("{"+(i-1)+"}").join(arguments[i]);return s}
 function hname(n){return LANG==="ko"&&DH[n]?DH[n]:n}
@@ -176,14 +197,17 @@ function applyLang(){
   document.getElementById("lang").innerHTML='<button data-l="en"'+(LANG=="en"?' class="on"':'')+'>EN</button><button data-l="ko"'+(LANG=="ko"?' class="on"':'')+'>한국어</button>';
 }
 applyLang();
-var KEY="disc-tracker-v4",state={habits:["Wake up at 7 AM","6+ hrs focused study","Workout","Bed before 1 AM","Drink 2L+ water","No snacks","3-min meditation"],checks:{},starts:[],ends:[]};
+var KEY="disc-tracker-v4",state={habits:["Wake up at 7 AM","6+ hrs focused study","Workout","Bed before 1 AM","Drink 2L+ water","No snacks","3-min meditation","Quote of the Day","Daily Journal"],checks:{},starts:[],ends:[]};
 try{var s=localStorage.getItem(KEY);if(s)state=JSON.parse(s)}catch(e){}
-var KO={"아침 7시 기상":"Wake up at 7 AM","순공 6시간 이상":"6+ hrs focused study","운동":"Workout","1시 전 취침":"Bed before 1 AM","물 2L 이상":"Drink 2L+ water","간식 안 먹기":"No snacks","3분 명상":"3-min meditation"};
-function norm(){state.habits=(state.habits||[]).map(function(x){return KO[x]||x});state.checks=state.checks||{};state.starts=state.starts||[];state.ends=state.ends||[];state.joined=state.joined||0;state.purged=state.purged||[];while(state.starts.length<state.habits.length)state.starts.push(0);while(state.ends.length<state.habits.length)state.ends.push(0);fixOrder();fixLay()}
+var KO={"아침 7시 기상":"Wake up at 7 AM","순공 6시간 이상":"6+ hrs focused study","운동":"Workout","1시 전 취침":"Bed before 1 AM","물 2L 이상":"Drink 2L+ water","간식 안 먹기":"No snacks","3분 명상":"3-min meditation","오늘의 문장":"Quote of the Day","하루 일기":"Daily Journal"};
+function norm(){state.habits=(state.habits||[]).map(function(x){return KO[x]||x});state.checks=state.checks||{};state.starts=state.starts||[];state.ends=state.ends||[];state.joined=state.joined||0;state.purged=state.purged||[];while(state.starts.length<state.habits.length)state.starts.push(0);while(state.ends.length<state.habits.length)state.ends.push(0);state.notes=state.notes||{};state.notes.quote=state.notes.quote||{};state.notes.journal=state.notes.journal||{};state.hiddenTabs=state.hiddenTabs||[];var mig=false;
+  if(!state.m14){var n=new Date(),t=ymd(n.getFullYear(),n.getMonth(),n.getDate());["Quote of the Day","Daily Journal"].forEach(function(h){var has=state.habits.some(function(x,i){return x.trim().toLowerCase()==h.toLowerCase()&&!state.ends[i]&&!isPur(i)});if(!has){state.habits.push(h);state.starts.push(t);state.ends.push(0)}});state.m14=1;mig=true}
+  fixOrder();fixLay();return mig}
+function payload(){return {habits:state.habits,checks:state.checks,starts:state.starts,ends:state.ends,joined:state.joined||0,purged:state.purged||[],order:state.order||[],layout:state.layout||[],notes:state.notes||{},hiddenTabs:state.hiddenTabs||[],m14:state.m14||0}}
 var SECS=["stats","top","rout","grp"];
 function fixLay(){var o=(state.layout||[]).filter(function(k,j,a){return SECS.indexOf(k)>-1&&a.indexOf(k)===j});SECS.forEach(function(k){if(o.indexOf(k)<0)o.push(k)});state.layout=o}
 function fixOrder(){var o=[],H=state.habits.length;(state.order||[]).forEach(function(x){x=+x;if(x>=0&&x<H&&o.indexOf(x)<0)o.push(x)});for(var i=0;i<H;i++)if(o.indexOf(i)<0)o.push(i);state.order=o}
-norm();
+if(norm()){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
 function ymd(y,m,d){return y*10000+(m+1)*100+d}
 var SB_URL="https://ewqqmemaumyzkdpactbp.supabase.co",SB_KEY="sb_publishable_MOY2-ApfVch3xBzZuJDuGA_cagNLn6C";/* <- paste your Supabase Project URL and anon public key here */
 var sb=null,uid=null,tmr=null,curSess=null;
@@ -191,7 +215,7 @@ function setSync(t){var e=document.getElementById("sync");if(e)e.textContent=t}
 function push(){
   if(!sb||!uid)return;clearTimeout(tmr);
   tmr=setTimeout(function(){tmr=null;var v=dv;
-    sb.from("tracker").upsert({user_id:uid,data:{habits:state.habits,checks:state.checks,starts:state.starts,ends:state.ends,joined:state.joined||0,purged:state.purged||[],order:state.order||[],layout:state.layout||[]},updated_at:new Date().toISOString()})
+    sb.from("tracker").upsert({user_id:uid,data:payload(),updated_at:new Date().toISOString()})
       .then(function(r){setSync(r.error?tx("syncFail"):tx("synced"));if(!r.error&&v===dv)clearDirty();if(!r.error)pushStats().then(function(){if(hasG)loadGroups()})},function(){setSync(tx("syncFail"))});
   },400);
 }
@@ -305,7 +329,48 @@ function renderDeleted(){
   list.forEach(function(i){var e=state.ends[i];h+='<div class="dl"><span>'+esc(hname(state.habits[i]))+'<small>'+tx("delOn",Math.floor(e/10000),Math.floor(e%10000/100),e%100)+'</small></span><span style="display:flex;gap:6px;flex:none"><button data-res="'+i+'">↺ '+tx("restore")+'</button><button data-pg="'+i+'" style="color:#c0392b">'+tx("purge")+'</button></span></div>'});
   el.innerHTML=h;el.open=open;
 }
-var LAYO=false;
+var LAYO=false,TAB="main",ND={quote:new Date(),journal:new Date()},ntm=null;
+try{var t0=localStorage.getItem("disc-tab");if(t0)TAB=t0}catch(e){}
+function dkey(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function dlabel(k){var a=k.split("-");return LANG=="ko"?(+a[0])+". "+(+a[1])+". "+(+a[2])+".":MN[+a[1]-1]+" "+(+a[2])+", "+a[0]}
+function renderTabs(){
+  if(TAB!="main"&&(state.hiddenTabs||[]).indexOf(TAB)>-1)TAB="main";
+  var L=[["main","tMain"],["quote","tQuote"],["journal","tJournal"]],h="";
+  L.forEach(function(x){if(x[0]!="main"&&(state.hiddenTabs||[]).indexOf(x[0])>-1)return;
+    h+='<div class="tb'+(TAB==x[0]?' on':'')+'"><button data-tab="'+x[0]+'">'+tx(x[1])+'</button>'+(x[0]!="main"?'<button class="x" data-hide="'+x[0]+'" aria-label="'+tx("del")+'">×</button>':'')+'</div>'});
+  $("tabs").innerHTML=h;
+  document.body.classList.toggle("alt",TAB!="main");
+  $("pq").classList.toggle("on",TAB=="quote");$("pj").classList.toggle("on",TAB=="journal");
+  if(TAB=="quote"||TAB=="journal")renderNote(TAB);
+}
+function sentCount(t){return (t||"").split(/[.!?。！？\n]+/).filter(function(x){return x.trim().length>1}).length}
+function renderNote(k){
+  var p=$(k=="quote"?"pq":"pj"),d=ND[k],key=dkey(d),e=state.notes[k][key],isT=key==dkey(new Date()),h;
+  h='<div class="dnav"><button data-nv="-1">‹</button><b>'+dlabel(key)+'</b><span style="display:flex;gap:6px">'+(isT?'':'<button data-nv="0">'+tx("todayB")+'</button>')+'<button data-nv="1"'+(isT?' disabled style="opacity:.3"':'')+'>›</button></span></div>';
+  if(k=="quote"){e=e||{};
+    h+='<textarea class="q" id="nq" rows="3" placeholder="'+tx("qText")+'">'+esc(e.text||"")+'</textarea><input id="ns" placeholder="'+tx("qSrc")+'" value="'+esc(e.src||"")+'"><textarea id="nw" rows="2" placeholder="'+tx("qWhy")+'">'+esc(e.why||"")+'</textarea>';
+  }else{
+    h+='<textarea id="nj" rows="8" placeholder="'+tx("jText")+'">'+esc(e||"")+'</textarea>';
+  }
+  h+='<div class="nst" id="nst">'+(k=="journal"?tx("sentN",sentCount(e))+' / 3':'')+'</div>';
+  var keys=Object.keys(state.notes[k]).filter(function(x){var v=state.notes[k][x];return k=="quote"?(v&&v.text):v}).sort().reverse();
+  h+='<details class="atd" open><summary>'+tx("past",keys.length)+'</summary>';
+  keys.forEach(function(x){var v=state.notes[k][x];
+    h+='<div class="ent" data-go="'+x+'"><div class="dt">'+dlabel(x)+'</div>'+(k=="quote"?'<div class="qt">“'+esc(v.text)+'”</div>'+(v.src?'<div class="sr">— '+esc(v.src)+'</div>':'')+(v.why?'<div class="sr" style="margin-top:2px">'+esc(v.why)+'</div>':''):'<div class="jt">'+esc(v)+'</div>')+'</div>'});
+  h+='</details>';
+  p.innerHTML=h;
+}
+function noteHabit(k,key){
+  var nm=k=="quote"?"quote of the day":"daily journal",a=key.split("-"),y=+a[0],m=+a[1]-1,d=+a[2],v=ymd(y,m,d);
+  for(var i=0;i<state.habits.length;i++){if(state.habits[i].trim().toLowerCase()==nm&&act(i,v)){var mk2=y+"-"+(m+1);state.checks[mk2]=state.checks[mk2]||{};var r=state.checks[mk2][i]=state.checks[mk2][i]||[];if(r.indexOf(d)<0)r.push(d);return true}}
+  return false;
+}
+function onNote(k){
+  var key=dkey(ND[k]),ok;
+  if(k=="quote"){var t=$("nq").value.trim(),sr=$("ns").value.trim(),w=$("nw").value.trim();if(t||sr||w)state.notes.quote[key]={text:t,src:sr,why:w};else delete state.notes.quote[key];ok=!!t}
+  else{var j=$("nj").value;if(j.trim())state.notes.journal[key]=j;else delete state.notes.journal[key];ok=sentCount(j)>=3;$("nst").textContent=tx("sentN",sentCount(j))+" / 3"}
+  clearTimeout(ntm);ntm=setTimeout(function(){var c=ok&&noteHabit(k,key);save();render();$("nst").textContent=(k=="journal"?tx("sentN",sentCount($("nj").value))+" / 3 · ":"")+(c?tx("saved"):tx("synced"))},700);
+}
 function applyLayout(){
   fixLay();var w=document.querySelector(".wrap"),anchor=$("auth");
   state.layout.forEach(function(k){var e=w.querySelector('[data-sec="'+k+'"]');if(e)w.insertBefore(e,anchor)});
@@ -313,6 +378,8 @@ function applyLayout(){
   var p=$("lay");p.style.display=LAYO?"flex":"none";if(!LAYO)return;
   var nm={stats:"secStats",top:"secTop",rout:"secRout",grp:"secGrp"},h='<div class="tph"><b>'+tx("layoutT")+'</b></div>',L=state.layout.length;
   state.layout.forEach(function(k,j){h+='<div class="dl"><span>'+(j+1)+'. '+tx(nm[k])+'</span><span style="display:flex;gap:6px;flex:none"><button data-lm="'+j+'" data-dir="-1"'+(j==0?' disabled style="opacity:.3"':'')+' aria-label="'+tx("up")+'">▲</button><button data-lm="'+j+'" data-dir="1"'+(j==L-1?' disabled style="opacity:.3"':'')+' aria-label="'+tx("down")+'">▼</button></span></div>'});
+  var ht=(state.hiddenTabs||[]);
+  if(ht.length){h+='<div class="tph" style="margin-top:10px"><b>'+tx("hidTabs")+'</b></div>';ht.forEach(function(k){h+='<div class="dl"><span>'+tx(k=="quote"?"tQuote":"tJournal")+'</span><button data-st="'+k+'">'+tx("show")+'</button></div>'})}
   p.innerHTML=h;
 }
 function render(){
@@ -378,6 +445,7 @@ function render(){
   renderDeleted();
   renderTop();
   applyLayout();
+  if(!document.activeElement||!document.activeElement.closest||!document.activeElement.closest(".np"))renderTabs();
 }
 $("yr").onchange=$("mo").onchange=function(){cur=new Date(+$("yr").value,+$("mo").value-1,1);if(cur<MIN)cur=new Date(MIN);wk=null;render()};
 $("tbl").addEventListener("change",function(e){
@@ -400,8 +468,18 @@ $("tbl").addEventListener("click",function(e){
 function add(){var v=$("newh"),t=v.value.trim();if(!t)return;var n=new Date();state.ends[state.habits.length]=0;state.starts[state.habits.length]=ymd(n.getFullYear(),n.getMonth(),n.getDate());state.habits.push(t);v.value="";save();render()}
 $("addb").onclick=add;
 $("reo").onclick=function(){REO=!REO;render()};
-$("layb").onclick=function(){LAYO=!LAYO;applyLayout()};
-$("lay").addEventListener("click",function(e){var b=e.target.closest("button");if(!b||b.dataset.lm==null)return;var j=+b.dataset.lm,q=j+(+b.dataset.dir),o=state.layout;if(q<0||q>=o.length)return;var t=o[j];o[j]=o[q];o[q]=t;save();applyLayout()});
+$("layb").onclick=function(){if(TAB!="main"){TAB="main";renderTabs()}LAYO=!LAYO;applyLayout()};
+$("tabs").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;
+  if(b.dataset.hide){if(!confirm(tx("hideTab")))return;state.hiddenTabs=(state.hiddenTabs||[]).concat([b.dataset.hide]);save();renderTabs();applyLayout();return}
+  if(b.dataset.tab){TAB=b.dataset.tab;try{localStorage.setItem("disc-tab",TAB)}catch(x){}renderTabs();window.scrollTo(0,0)}});
+["pq","pj"].forEach(function(id){var k=id=="pq"?"quote":"journal",p=$(id);
+  p.addEventListener("input",function(e){if(e.target.matches("textarea,input"))onNote(k)});
+  p.addEventListener("click",function(e){var b=e.target.closest("[data-nv],[data-go]");if(!b)return;
+    if(b.dataset.go){var a=b.dataset.go.split("-");ND[k]=new Date(+a[0],+a[1]-1,+a[2]);window.scrollTo(0,0)}
+    else{var v=+b.dataset.nv;if(v==0)ND[k]=new Date();else{var n=new Date(ND[k]);n.setDate(n.getDate()+v);if(n>new Date())return;ND[k]=n}}
+    renderNote(k)});
+});
+$("lay").addEventListener("click",function(e){var b=e.target.closest("button");if(b&&b.dataset.st){state.hiddenTabs=(state.hiddenTabs||[]).filter(function(k){return k!=b.dataset.st});save();renderTabs();applyLayout();return}if(!b||b.dataset.lm==null)return;var j=+b.dataset.lm,q=j+(+b.dataset.dir),o=state.layout;if(q<0||q>=o.length)return;var t=o[j];o[j]=o[q];o[q]=t;save();applyLayout()});
 $("vseg").addEventListener("click",function(e){var b=e.target.closest("button");if(!b||!b.dataset.v||b.dataset.v===VIEW)return;VIEW=b.dataset.v;try{localStorage.setItem("disc-view",VIEW)}catch(x){}render()});
 function doRestore(i){
   if(!canRes(i))return;
@@ -446,13 +524,13 @@ function renderAuth(sess){
     $("so").onclick=async function(){
       clearTimeout(tmr);tmr=null;
       try{
-        var f=await sb.from("tracker").upsert({user_id:uid,data:{habits:state.habits,checks:state.checks,starts:state.starts,ends:state.ends,joined:state.joined||0,purged:state.purged||[],order:state.order||[],layout:state.layout||[]},updated_at:new Date().toISOString()});
+        var f=await sb.from("tracker").upsert({user_id:uid,data:payload(),updated_at:new Date().toISOString()});
         if(f.error)throw f.error;
       }catch(e){setSync(tx("noSignout"));return}
       await sb.auth.signOut();
       $("grp").style.display="none";$("glist").innerHTML="";hasG=false;
       try{localStorage.removeItem(KEY);localStorage.removeItem("disc-dirty")}catch(e){}
-      state={habits:["Wake up at 7 AM","6+ hrs focused study","Workout","Bed before 1 AM","Drink 2L+ water","No snacks","3-min meditation"],checks:{},starts:[],ends:[]};
+      state={habits:["Wake up at 7 AM","6+ hrs focused study","Workout","Bed before 1 AM","Drink 2L+ water","No snacks","3-min meditation","Quote of the Day","Daily Journal"],checks:{},starts:[],ends:[]};
       norm();wk=null;render();
     };
   }else{
@@ -473,6 +551,8 @@ function mergeState(a,b){
   o.joined=mn(a.joined,b.joined);
   o.order=(a.order&&a.order.length?a.order:b.order)||[];
   o.layout=(a.layout&&a.layout.length?a.layout:b.layout)||[];
+  o.hiddenTabs=a.hiddenTabs||b.hiddenTabs||[];o.m14=a.m14||b.m14||0;o.notes={};
+  ["quote","journal"].forEach(function(k){var x=(a.notes||{})[k]||{},y=(b.notes||{})[k]||{};o.notes[k]=Object.assign({},y,x)});
   o.purged=(a.purged||[]).concat(b.purged||[]).filter(function(x,j,arr){return arr.indexOf(x)===j});
   var ca=a.checks||{},cb=b.checks||{},keys={};
   Object.keys(ca).concat(Object.keys(cb)).forEach(function(k){keys[k]=1});
@@ -492,10 +572,10 @@ async function pull(){
   if(r.error){setSync(tx("syncFail"));return}
   var d=r.data&&r.data.data;
   if(d&&d.habits){
-    var srv={habits:d.habits,checks:d.checks||{},starts:d.starts||[],ends:d.ends||[],joined:d.joined||0,purged:d.purged||[],order:d.order||[],layout:d.layout||[]},wasDirty=isDirty();
-    state=wasDirty?mergeState(state,srv):srv;norm();
+    var srv=Object.assign({},d,{checks:d.checks||{},starts:d.starts||[],ends:d.ends||[],joined:d.joined||0,purged:d.purged||[],order:d.order||[],layout:d.layout||[]}),wasDirty=isDirty();
+    state=wasDirty?mergeState(state,srv):srv;var mig=norm();
     try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}
-    render();if(wasDirty)push();
+    render();if(wasDirty||mig)push();
   }else{
     var any=Object.keys(state.checks).some(function(k){return Object.keys(state.checks[k]).some(function(j){return state.checks[k][j].length})});
     if(!any&&cy){state.joined=cy;try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}render()}
