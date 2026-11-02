@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="version" content="1.5.0">
+<meta name="version" content="1.6.0">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Discipline Tracker</title>
 <link rel="manifest" href="/manifest.json">
@@ -115,6 +115,9 @@ body.alt .sec,body.alt #lay{display:none!important}
 .dnav{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
 .dnav b{font-family:"Gowun Batang",serif;font-size:16px}
 .dnav button{font:inherit;font-size:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:5px 12px;cursor:pointer}
+.ne{padding:8px 0;border-bottom:1px dashed var(--line)}.ne:last-of-type{border-bottom:0}
+.neh{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--mute)}
+.neh button{font:inherit;font-size:11px;border:0;background:none;color:var(--mute);cursor:pointer;padding:2px 4px}
 .nst{font-size:11px;color:var(--mute);min-height:15px}
 .ent{padding:10px 2px;border-top:1px solid var(--line);cursor:pointer}
 .ent .dt{font-size:11px;color:var(--mute)}
@@ -153,7 +156,7 @@ body.alt .sec,body.alt #lay{display:none!important}
     <div class="add" style="flex-wrap:wrap"><input id="gcode" data-ip="inviteCode" placeholder="Invite code" maxlength="12" autocapitalize="characters"><button id="gjoin" data-i="join">Join</button><button id="gref" data-i="refresh">Refresh</button></div>
   </div>
   <div id="sync" style="text-align:center;font-size:11px;color:var(--mute);margin-top:10px"></div>
-  <div id="ver" style="text-align:center;font-size:10px;color:var(--mute);opacity:.7;margin-top:4px">v1.5.0</div>
+  <div id="ver" style="text-align:center;font-size:10px;color:var(--mute);opacity:.7;margin-top:4px">v1.6.0</div>
 </div>
 <script>
 var TR={en:{
@@ -169,7 +172,7 @@ synced:"☁ Synced",syncFail:"Not synced yet – saved on this device, will sync
 idRule:"ID: 3–30 chars, letters/numbers/. _ -",confirmOn:"Email confirmation is on in Supabase – turn it off to use IDs",signinHint:"Sign in to sync across devices",
 grpNA:"Groups not available yet:",invCode:"Invite code:",leave:"Leave",member:"Member",today:"Today",thisWeek:"This week",thisMonth:"This month",me:"(me)",
 noGroups:"No groups yet. Create one or join with an invite code. Only completion rates are shared – never your routine names.",
-leaveQ:"Leave this group?",badCode:"Invalid invite code",allRank:"All-time ranking by habit",allRankHint:"Ranked by success rate. If tied, the habit tracked for more days comes first.",tMain:"Tracker",tQuote:"Quote of the Day",tJournal:"Daily Journal",hideTab:"Hide this tab?\nYour entries are kept – you can bring it back from ⇅ Layout.",hidTabs:"Hidden tabs",show:"Show",qText:"Today's quote",qSrc:"Source (book, person…)",qWhy:"Why it stayed with me (optional)",jText:"How was your day? (3+ sentences)",sentN:"{0} sentences",saved:"Saved · checked off",past:"Past entries ({0})",todayB:"Today",layout:"⇅ Layout",layoutT:"Section order",secStats:"Stats cards",secTop:"Top 5 / ranking",secRout:"Routine table",secGrp:"Groups",reorder:"↕ Reorder",done:"Done",up:"Move up",down:"Move down",statFail:"Group stats upload failed:",ago:"updated {0}d ago"
+leaveQ:"Leave this group?",badCode:"Invalid invite code",allRank:"All-time ranking by habit",allRankHint:"Ranked by success rate. If tied, the habit tracked for more days comes first.",tMain:"Tracker",tQuote:"Quote of the Day",tJournal:"Daily Journal",hideTab:"Hide this tab?\nYour entries are kept – you can bring it back from ⇅ Layout.",hidTabs:"Hidden tabs",show:"Show",qText:"Today's quote",qSrc:"Source (book, person…)",qWhy:"Why it stayed with me (optional)",jText:"How was your day? (3+ sentences)",sentN:"{0} sentences",saved:"Saved · checked off",addQ:"Add another quote",addJ:"Write another entry",cntU:" entries",delEnt:"Delete this entry?",past:"Past entries ({0})",todayB:"Today",layout:"⇅ Layout",layoutT:"Section order",secStats:"Stats cards",secTop:"Top 5 / ranking",secRout:"Routine table",secGrp:"Groups",reorder:"↕ Reorder",done:"Done",up:"Move up",down:"Move down",statFail:"Group stats upload failed:",ago:"updated {0}d ago"
 },ko:{
 aYear:"연도",aMonth:"월",aPrev:"이전 주",aNext:"다음 주",daily:"일별 달성",goal:"목표",ach:"달성",
 newHabit:"새 습관 (예: 스트레칭)",add:"추가",groups:"그룹",newGroup:"새 그룹 이름",create:"만들기",inviteCode:"초대 코드",join:"참여",refresh:"새로고침",
@@ -183,7 +186,7 @@ synced:"☁ 동기화됨",syncFail:"아직 동기화 안 됨 – 이 기기에 �
 idRule:"ID: 3~30자, 영문·숫자·. _ - 만 가능",confirmOn:"Supabase의 이메일 확인이 켜져 있어요 – ID 가입을 쓰려면 꺼주세요",signinHint:"로그인하면 기기 간 동기화돼요",
 grpNA:"그룹을 아직 쓸 수 없어요:",invCode:"초대 코드:",leave:"나가기",member:"멤버",today:"오늘",thisWeek:"이번 주",thisMonth:"이번 달",me:"(나)",
 noGroups:"아직 그룹이 없어요. 만들거나 초대 코드로 참여해 보세요. 달성률만 공유되고 루틴 이름은 공유되지 않아요.",
-leaveQ:"이 그룹에서 나갈까요?",badCode:"초대 코드가 올바르지 않아요",allRank:"역대 습관별 순위",allRankHint:"성공률 순이고, 같으면 분모(기록한 날수)가 큰 쪽이 위로 가요.",tMain:"트래커",tQuote:"오늘의 문장",tJournal:"하루 일기",hideTab:"이 탭을 숨길까요?\n기록은 그대로 남고, ⇅ 화면 순서에서 다시 켤 수 있어요.",hidTabs:"숨긴 탭",show:"다시 보이기",qText:"오늘의 문장",qSrc:"출처 (책, 사람 등)",qWhy:"인상 깊었던 이유 (선택)",jText:"오늘 하루는 어땠나요? (최소 3문장)",sentN:"{0}문장",saved:"저장됨 · 체크 완료",past:"지난 기록 ({0})",todayB:"오늘",layout:"⇅ 화면 순서",layoutT:"화면 구역 순서",secStats:"통계 카드",secTop:"Top 5 / 순위",secRout:"루틴 표",secGrp:"그룹",reorder:"↕ 순서 변경",done:"완료",up:"위로",down:"아래로",statFail:"그룹 통계 업로드 실패:",ago:"{0}일 전 업데이트"
+leaveQ:"이 그룹에서 나갈까요?",badCode:"초대 코드가 올바르지 않아요",allRank:"역대 습관별 순위",allRankHint:"성공률 순이고, 같으면 분모(기록한 날수)가 큰 쪽이 위로 가요.",tMain:"트래커",tQuote:"오늘의 문장",tJournal:"하루 일기",hideTab:"이 탭을 숨길까요?\n기록은 그대로 남고, ⇅ 화면 순서에서 다시 켤 수 있어요.",hidTabs:"숨긴 탭",show:"다시 보이기",qText:"오늘의 문장",qSrc:"출처 (책, 사람 등)",qWhy:"인상 깊었던 이유 (선택)",jText:"오늘 하루는 어땠나요? (최소 3문장)",sentN:"{0}문장",saved:"저장됨 · 체크 완료",addQ:"문장 하나 더 추가",addJ:"일기 하나 더 쓰기",cntU:"개",delEnt:"이 기록을 삭제할까요?",past:"지난 기록 ({0})",todayB:"오늘",layout:"⇅ 화면 순서",layoutT:"화면 구역 순서",secStats:"통계 카드",secTop:"Top 5 / 순위",secRout:"루틴 표",secGrp:"그룹",reorder:"↕ 순서 변경",done:"완료",up:"위로",down:"아래로",statFail:"그룹 통계 업로드 실패:",ago:"{0}일 전 업데이트"
 }};
 var DH={"Wake up at 7 AM":"아침 7시 기상","6+ hrs focused study":"순공 6시간 이상","Workout":"운동","Bed before 1 AM":"1시 전 취침","Drink 2L+ water":"물 2L 이상","No snacks":"간식 안 먹기","3-min meditation":"3분 명상","Quote of the Day":"오늘의 문장","Daily Journal":"하루 일기"};
 var LANG=(function(){try{var l=localStorage.getItem("disc-lang");if(l==="ko"||l==="en")return l}catch(e){}return /^ko/i.test(navigator.language||"")?"ko":"en"})();
@@ -200,10 +203,11 @@ applyLang();
 var KEY="disc-tracker-v4",state={habits:["Wake up at 7 AM","6+ hrs focused study","Workout","Bed before 1 AM","Drink 2L+ water","No snacks","3-min meditation","Quote of the Day","Daily Journal"],checks:{},starts:[],ends:[]};
 try{var s=localStorage.getItem(KEY);if(s)state=JSON.parse(s)}catch(e){}
 var KO={"아침 7시 기상":"Wake up at 7 AM","순공 6시간 이상":"6+ hrs focused study","운동":"Workout","1시 전 취침":"Bed before 1 AM","물 2L 이상":"Drink 2L+ water","간식 안 먹기":"No snacks","3분 명상":"3-min meditation","오늘의 문장":"Quote of the Day","하루 일기":"Daily Journal"};
-function norm(){state.habits=(state.habits||[]).map(function(x){return KO[x]||x});state.checks=state.checks||{};state.starts=state.starts||[];state.ends=state.ends||[];state.joined=state.joined||0;state.purged=state.purged||[];while(state.starts.length<state.habits.length)state.starts.push(0);while(state.ends.length<state.habits.length)state.ends.push(0);state.notes=state.notes||{};state.notes.quote=state.notes.quote||{};state.notes.journal=state.notes.journal||{};state.hiddenTabs=state.hiddenTabs||[];var mig=false;
+function norm(){state.habits=(state.habits||[]).map(function(x){return KO[x]||x});state.checks=state.checks||{};state.starts=state.starts||[];state.ends=state.ends||[];state.joined=state.joined||0;state.purged=state.purged||[];while(state.starts.length<state.habits.length)state.starts.push(0);while(state.ends.length<state.habits.length)state.ends.push(0);state.notes=state.notes||{};state.notes.quote=state.notes.quote||{};state.notes.journal=state.notes.journal||{};["quote","journal"].forEach(function(k){var N=state.notes[k];Object.keys(N).forEach(function(x){var v=N[x];if(!Array.isArray(v))v=v?[v]:[];v=v.map(function(e){if(typeof e=="string")e={text:e};e=Object.assign({},e);if(!e.id)e.id=x+"-"+Math.random().toString(36).slice(2,7);return e}).filter(function(e){return !nEmpty(e)});if(v.length)N[x]=v;else delete N[x]})});state.hiddenTabs=state.hiddenTabs||[];var mig=false;
   if(!state.m14){var n=new Date(),t=ymd(n.getFullYear(),n.getMonth(),n.getDate());["Quote of the Day","Daily Journal"].forEach(function(h){var has=state.habits.some(function(x,i){return x.trim().toLowerCase()==h.toLowerCase()&&!state.ends[i]&&!isPur(i)});if(!has){state.habits.push(h);state.starts.push(t);state.ends.push(0)}});state.m14=1;mig=true}
   fixOrder();fixLay();return mig}
-function payload(){return {habits:state.habits,checks:state.checks,starts:state.starts,ends:state.ends,joined:state.joined||0,purged:state.purged||[],order:state.order||[],layout:state.layout||[],notes:state.notes||{},hiddenTabs:state.hiddenTabs||[],m14:state.m14||0}}
+function cleanNotes(){var o={};["quote","journal"].forEach(function(k){o[k]={};var N=(state.notes||{})[k]||{};Object.keys(N).forEach(function(x){var v=(Array.isArray(N[x])?N[x]:[N[x]]).filter(function(e){return !nEmpty(typeof e=="string"?{text:e}:e)});if(v.length)o[k][x]=v})});return o}
+function payload(){return {habits:state.habits,checks:state.checks,starts:state.starts,ends:state.ends,joined:state.joined||0,purged:state.purged||[],order:state.order||[],layout:state.layout||[],notes:cleanNotes(),hiddenTabs:state.hiddenTabs||[],m14:state.m14||0}}
 var SECS=["stats","top","rout","grp"];
 function fixLay(){var o=(state.layout||[]).filter(function(k,j,a){return SECS.indexOf(k)>-1&&a.indexOf(k)===j});SECS.forEach(function(k){if(o.indexOf(k)<0)o.push(k)});state.layout=o}
 function fixOrder(){var o=[],H=state.habits.length;(state.order||[]).forEach(function(x){x=+x;if(x>=0&&x<H&&o.indexOf(x)<0)o.push(x)});for(var i=0;i<H;i++)if(o.indexOf(i)<0)o.push(i);state.order=o}
@@ -344,20 +348,30 @@ function renderTabs(){
   if(TAB=="quote"||TAB=="journal")renderNote(TAB);
 }
 function sentCount(t){return (t||"").split(/[.!?。！？\n]+/).filter(function(x){return x.trim().length>1}).length}
+function nid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
+function nEmpty(e){return !e||!((e.text||"").trim()||(e.src||"").trim()||(e.why||"").trim())}
+function nArr(k,key){var v=state.notes[k][key];if(!Array.isArray(v)){v=v?[v]:[];state.notes[k][key]=v}return v}
+function hm(t){if(!t)return"";var d=new Date(t);return String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0")}
+function daySent(arr){return arr.reduce(function(s,e){return s+sentCount(e&&e.text)},0)}
+function entHtml(k,e,i){
+  var h='<div class="ne" data-ei="'+i+'"><div class="neh"><span>#'+(i+1)+(e.t?' · '+hm(e.t):'')+'</span>'+(nEmpty(e)&&i==0?'':'<button data-rm="'+i+'">'+tx("del")+'</button>')+'</div>';
+  if(k=="quote")h+='<textarea class="q" data-f="text" rows="3" placeholder="'+tx("qText")+'">'+esc(e.text||"")+'</textarea><input data-f="src" placeholder="'+tx("qSrc")+'" value="'+esc(e.src||"")+'"><textarea data-f="why" rows="2" placeholder="'+tx("qWhy")+'">'+esc(e.why||"")+'</textarea>';
+  else h+='<textarea data-f="text" rows="6" placeholder="'+tx("jText")+'">'+esc(e.text||"")+'</textarea>';
+  return h+'</div>';
+}
 function renderNote(k){
-  var p=$(k=="quote"?"pq":"pj"),d=ND[k],key=dkey(d),e=state.notes[k][key],isT=key==dkey(new Date()),h;
+  var p=$(k=="quote"?"pq":"pj"),d=ND[k],key=dkey(d),isT=key==dkey(new Date()),arr=nArr(k,key),h;
+  if(!arr.length)arr.push({id:nid(),text:""});
   h='<div class="dnav"><button data-nv="-1">‹</button><b>'+dlabel(key)+'</b><span style="display:flex;gap:6px">'+(isT?'':'<button data-nv="0">'+tx("todayB")+'</button>')+'<button data-nv="1"'+(isT?' disabled style="opacity:.3"':'')+'>›</button></span></div>';
-  if(k=="quote"){e=e||{};
-    h+='<textarea class="q" id="nq" rows="3" placeholder="'+tx("qText")+'">'+esc(e.text||"")+'</textarea><input id="ns" placeholder="'+tx("qSrc")+'" value="'+esc(e.src||"")+'"><textarea id="nw" rows="2" placeholder="'+tx("qWhy")+'">'+esc(e.why||"")+'</textarea>';
-  }else{
-    h+='<textarea id="nj" rows="8" placeholder="'+tx("jText")+'">'+esc(e||"")+'</textarea>';
-  }
-  h+='<div class="nst" id="nst">'+(k=="journal"?tx("sentN",sentCount(e))+' / 3':'')+'</div>';
-  var keys=Object.keys(state.notes[k]).filter(function(x){var v=state.notes[k][x];return k=="quote"?(v&&v.text):v}).sort().reverse();
-  h+='<details class="atd" open><summary>'+tx("past",keys.length)+'</summary>';
-  keys.forEach(function(x){var v=state.notes[k][x];
-    h+='<div class="ent" data-go="'+x+'"><div class="dt">'+dlabel(x)+'</div>'+(k=="quote"?'<div class="qt">“'+esc(v.text)+'”</div>'+(v.src?'<div class="sr">— '+esc(v.src)+'</div>':'')+(v.why?'<div class="sr" style="margin-top:2px">'+esc(v.why)+'</div>':''):'<div class="jt">'+esc(v)+'</div>')+'</div>'});
-  h+='</details>';
+  arr.forEach(function(e,i){h+=entHtml(k,e,i)});
+  h+='<div class="add" style="margin-top:6px"><button data-addn="1" style="flex:1">+ '+tx(k=="quote"?"addQ":"addJ")+'</button></div>';
+  h+='<div class="nst" id="nst">'+(k=="journal"?tx("sentN",daySent(arr))+' / 3':'')+'</div>';
+  var keys=Object.keys(state.notes[k]).filter(function(x){return nArr(k,x).some(function(e){return !nEmpty(e)})}).sort().reverse(),cnt=0,L="";
+  keys.forEach(function(x){var es=nArr(k,x).filter(function(e){return !nEmpty(e)});cnt+=es.length;
+    L+='<div class="ent" data-go="'+x+'"><div class="dt">'+dlabel(x)+(es.length>1?' · '+es.length+tx("cntU"):'')+'</div>';
+    es.forEach(function(v){L+=k=="quote"?'<div class="qt">“'+esc(v.text||"")+'”</div>'+(v.src?'<div class="sr">— '+esc(v.src)+'</div>':'')+(v.why?'<div class="sr" style="margin:2px 0 6px">'+esc(v.why)+'</div>':''):'<div class="jt">'+(v.t?'<span class="dt">'+hm(v.t)+'</span> ':'')+esc(v.text||"")+'</div>'});
+    L+='</div>'});
+  h+='<details class="atd" open><summary>'+tx("past",cnt)+'</summary>'+L+'</details>';
   p.innerHTML=h;
 }
 function noteHabit(k,key){
@@ -365,11 +379,12 @@ function noteHabit(k,key){
   for(var i=0;i<state.habits.length;i++){if(state.habits[i].trim().toLowerCase()==nm&&act(i,v)){var mk2=y+"-"+(m+1);state.checks[mk2]=state.checks[mk2]||{};var r=state.checks[mk2][i]=state.checks[mk2][i]||[];if(r.indexOf(d)<0)r.push(d);return true}}
   return false;
 }
-function onNote(k){
-  var key=dkey(ND[k]),ok;
-  if(k=="quote"){var t=$("nq").value.trim(),sr=$("ns").value.trim(),w=$("nw").value.trim();if(t||sr||w)state.notes.quote[key]={text:t,src:sr,why:w};else delete state.notes.quote[key];ok=!!t}
-  else{var j=$("nj").value;if(j.trim())state.notes.journal[key]=j;else delete state.notes.journal[key];ok=sentCount(j)>=3;$("nst").textContent=tx("sentN",sentCount(j))+" / 3"}
-  clearTimeout(ntm);ntm=setTimeout(function(){var c=ok&&noteHabit(k,key);save();render();$("nst").textContent=(k=="journal"?tx("sentN",sentCount($("nj").value))+" / 3 · ":"")+(c?tx("saved"):tx("synced"))},700);
+function onNote(k,el){
+  var key=dkey(ND[k]),arr=nArr(k,key),box=el.closest(".ne");if(!box)return;
+  var i=+box.dataset.ei,e=arr[i]=arr[i]||{id:nid()};e[el.dataset.f]=el.value;if(!e.t&&!nEmpty(e))e.t=Date.now();
+  var ok=k=="quote"?arr.some(function(x){return x&&(x.text||"").trim()}):daySent(arr)>=3;
+  if(k=="journal")$("nst").textContent=tx("sentN",daySent(arr))+" / 3";
+  clearTimeout(ntm);ntm=setTimeout(function(){var c=ok&&noteHabit(k,key);save();render();$("nst").textContent=(k=="journal"?tx("sentN",daySent(nArr(k,key)))+" / 3 · ":"")+(c?tx("saved"):tx("synced"))},700);
 }
 function applyLayout(){
   fixLay();var w=document.querySelector(".wrap"),anchor=$("auth");
@@ -473,8 +488,11 @@ $("tabs").addEventListener("click",function(e){var b=e.target.closest("button");
   if(b.dataset.hide){if(!confirm(tx("hideTab")))return;state.hiddenTabs=(state.hiddenTabs||[]).concat([b.dataset.hide]);save();renderTabs();applyLayout();return}
   if(b.dataset.tab){TAB=b.dataset.tab;try{localStorage.setItem("disc-tab",TAB)}catch(x){}renderTabs();window.scrollTo(0,0)}});
 ["pq","pj"].forEach(function(id){var k=id=="pq"?"quote":"journal",p=$(id);
-  p.addEventListener("input",function(e){if(e.target.matches("textarea,input"))onNote(k)});
-  p.addEventListener("click",function(e){var b=e.target.closest("[data-nv],[data-go]");if(!b)return;
+  p.addEventListener("input",function(e){if(e.target.dataset.f)onNote(k,e.target)});
+  p.addEventListener("click",function(e){
+    var ab=e.target.closest("[data-addn]");if(ab){var A=nArr(k,dkey(ND[k]));A.push({id:nid(),text:""});renderNote(k);var ts=p.querySelectorAll('.ne textarea[data-f="text"]');if(ts.length)ts[ts.length-1].focus();return}
+    var rb=e.target.closest("[data-rm]");if(rb){var key=dkey(ND[k]),A2=nArr(k,key),j=+rb.dataset.rm;if(!nEmpty(A2[j])&&!confirm(tx("delEnt")))return;A2.splice(j,1);if(!A2.length)delete state.notes[k][key];save();renderNote(k);return}
+    var b=e.target.closest("[data-nv],[data-go]");if(!b)return;
     if(b.dataset.go){var a=b.dataset.go.split("-");ND[k]=new Date(+a[0],+a[1]-1,+a[2]);window.scrollTo(0,0)}
     else{var v=+b.dataset.nv;if(v==0)ND[k]=new Date();else{var n=new Date(ND[k]);n.setDate(n.getDate()+v);if(n>new Date())return;ND[k]=n}}
     renderNote(k)});
@@ -552,7 +570,7 @@ function mergeState(a,b){
   o.order=(a.order&&a.order.length?a.order:b.order)||[];
   o.layout=(a.layout&&a.layout.length?a.layout:b.layout)||[];
   o.hiddenTabs=a.hiddenTabs||b.hiddenTabs||[];o.m14=a.m14||b.m14||0;o.notes={};
-  ["quote","journal"].forEach(function(k){var x=(a.notes||{})[k]||{},y=(b.notes||{})[k]||{};o.notes[k]=Object.assign({},y,x)});
+  ["quote","journal"].forEach(function(k){var x=(a.notes||{})[k]||{},y=(b.notes||{})[k]||{};o.notes[k]={};Object.keys(Object.assign({},y,x)).forEach(function(d){var A=[].concat(x[d]||[]),B=[].concat(y[d]||[]),ids={};A.forEach(function(e){if(e&&e.id)ids[e.id]=1});o.notes[k][d]=A.concat(B.filter(function(e){return !(e&&e.id&&ids[e.id])&&!(typeof e=="string"&&A.some(function(z){return (z.text||z)==e}))}))})});
   o.purged=(a.purged||[]).concat(b.purged||[]).filter(function(x,j,arr){return arr.indexOf(x)===j});
   var ca=a.checks||{},cb=b.checks||{},keys={};
   Object.keys(ca).concat(Object.keys(cb)).forEach(function(k){keys[k]=1});
