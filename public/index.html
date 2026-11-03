@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="version" content="1.6.0">
+<meta name="version" content="1.8.0">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Discipline Tracker</title>
 <link rel="manifest" href="/manifest.json">
@@ -118,6 +118,20 @@ body.alt .sec,body.alt #lay{display:none!important}
 .ne{padding:8px 0;border-bottom:1px dashed var(--line)}.ne:last-of-type{border-bottom:0}
 .neh{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--mute)}
 .neh button{font:inherit;font-size:11px;border:0;background:none;color:var(--mute);cursor:pointer;padding:2px 4px}
+.gi{display:flex;align-items:center;gap:8px;padding:7px 2px;border-top:1px solid var(--line);font-size:14px}
+.gi input[type=checkbox]{appearance:none;width:20px;height:20px;border:1.5px solid var(--line);border-radius:5px;margin:0;cursor:pointer;flex:none}
+.gi input[type=checkbox]:checked{background:var(--on);border-color:var(--on);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='white' stroke-width='2'/%3E%3C/svg%3E");background-size:100%}
+.gi .gt2{flex:1;min-width:0;overflow-wrap:anywhere}.gi.dn .gt2{color:var(--mute);text-decoration:line-through}
+.gi .gp{display:flex;align-items:center;gap:4px;flex:none;font-size:12px;color:var(--mute)}
+.gi button{font:inherit;border:0;background:none;color:var(--mute);cursor:pointer;padding:2px 5px;font-size:14px}
+.gi .gp button{border:1px solid var(--line);border-radius:6px;width:24px;height:24px;padding:0;color:var(--ink)}
+.gsum{font-size:12px;color:var(--mute);margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.oa{display:flex;gap:8px;width:100%;flex-wrap:wrap}
+.oa button{flex:1;min-width:150px;display:flex;align-items:center;justify-content:center;gap:8px;font:inherit;font-size:14px;font-weight:500;border-radius:8px;padding:10px 14px;cursor:pointer}
+.oa .og{background:#fff;color:#1f1f1f;border:1px solid #dadce0}
+.oa .ok{background:#FEE500;color:rgba(0,0,0,.85);border:1px solid #FEE500}
+.oa button.sm{font-size:12px;padding:6px 10px;min-width:120px;flex:0 1 auto}
+.orl{width:100%;text-align:center;font-size:11px;color:var(--mute);margin:2px 0}
 .nst{font-size:11px;color:var(--mute);min-height:15px}
 .ent{padding:10px 2px;border-top:1px solid var(--line);cursor:pointer}
 .ent .dt{font-size:11px;color:var(--mute)}
@@ -140,6 +154,7 @@ body.alt .sec,body.alt #lay{display:none!important}
     <div class="card gl"><div class="big"><span id="goal">0</span><small data-i="goal">goal</small></div><div class="big"><span id="ach">0</span><small data-i="ach">achieved</small></div></div>
     <div class="card"><div class="pie" id="pie"><span id="ppct">0%</span></div><h3 id="ptitle">Total stats (monthly)</h3></div>
   </div>
+  <div class="card sec" data-sec="goals" id="gl" style="margin-bottom:14px;justify-content:flex-start"><div class="tph"><b data-i="goalsT">Goals</b><div class="seg" id="gseg"></div></div><div class="dnav" id="gnav"></div><div id="gls"></div><div class="add" style="margin-top:8px;flex-wrap:wrap"><input id="gtx" data-ip="gNew" maxlength="60"><input id="gtg" data-ip="gNum" type="number" min="1" inputmode="numeric" style="flex:0 0 96px;min-width:0"><button id="gadd" data-i="add">Add</button></div></div>
   <div class="card sec" data-sec="top" id="tp"><div class="tph"><b>Top 5</b><div class="seg" id="tpb"></div></div><div id="tpl"></div><details class="atd" id="atd"><summary data-i="allRank">All-time ranking by habit</summary><div class="gh" data-i="allRankHint"></div><div id="atl"></div></details></div>
   <div class="sec" data-sec="rout" style="margin-bottom:14px">
   <div class="wbar" id="wbar"><button id="wp" data-ia="aPrev">‹</button><span id="wl"></span><button id="wn" data-ia="aNext">›</button></div>
@@ -156,7 +171,7 @@ body.alt .sec,body.alt #lay{display:none!important}
     <div class="add" style="flex-wrap:wrap"><input id="gcode" data-ip="inviteCode" placeholder="Invite code" maxlength="12" autocapitalize="characters"><button id="gjoin" data-i="join">Join</button><button id="gref" data-i="refresh">Refresh</button></div>
   </div>
   <div id="sync" style="text-align:center;font-size:11px;color:var(--mute);margin-top:10px"></div>
-  <div id="ver" style="text-align:center;font-size:10px;color:var(--mute);opacity:.7;margin-top:4px">v1.6.0</div>
+  <div id="ver" style="text-align:center;font-size:10px;color:var(--mute);opacity:.7;margin-top:4px">v1.8.0</div>
 </div>
 <script>
 var TR={en:{
@@ -172,7 +187,7 @@ synced:"☁ Synced",syncFail:"Not synced yet – saved on this device, will sync
 idRule:"ID: 3–30 chars, letters/numbers/. _ -",confirmOn:"Email confirmation is on in Supabase – turn it off to use IDs",signinHint:"Sign in to sync across devices",
 grpNA:"Groups not available yet:",invCode:"Invite code:",leave:"Leave",member:"Member",today:"Today",thisWeek:"This week",thisMonth:"This month",me:"(me)",
 noGroups:"No groups yet. Create one or join with an invite code. Only completion rates are shared – never your routine names.",
-leaveQ:"Leave this group?",badCode:"Invalid invite code",allRank:"All-time ranking by habit",allRankHint:"Ranked by success rate. If tied, the habit tracked for more days comes first.",tMain:"Tracker",tQuote:"Quote of the Day",tJournal:"Daily Journal",hideTab:"Hide this tab?\nYour entries are kept – you can bring it back from ⇅ Layout.",hidTabs:"Hidden tabs",show:"Show",qText:"Today's quote",qSrc:"Source (book, person…)",qWhy:"Why it stayed with me (optional)",jText:"How was your day? (3+ sentences)",sentN:"{0} sentences",saved:"Saved · checked off",addQ:"Add another quote",addJ:"Write another entry",cntU:" entries",delEnt:"Delete this entry?",past:"Past entries ({0})",todayB:"Today",layout:"⇅ Layout",layoutT:"Section order",secStats:"Stats cards",secTop:"Top 5 / ranking",secRout:"Routine table",secGrp:"Groups",reorder:"↕ Reorder",done:"Done",up:"Move up",down:"Move down",statFail:"Group stats upload failed:",ago:"updated {0}d ago"
+leaveQ:"Leave this group?",badCode:"Invalid invite code",allRank:"All-time ranking by habit",allRankHint:"Ranked by success rate. If tied, the habit tracked for more days comes first.",tMain:"Tracker",tQuote:"Quote of the Day",tJournal:"Daily Journal",hideTab:"Hide this tab?\nYour entries are kept – you can bring it back from ⇅ Layout.",hidTabs:"Hidden tabs",show:"Show",qText:"Today's quote",qSrc:"Source (book, person…)",qWhy:"Why it stayed with me (optional)",jText:"How was your day? (3+ sentences)",sentN:"{0} sentences",saved:"Saved · checked off",withG:"Continue with Google",goalsT:"Goals",secGoals:"Goals",gMon:"Month",gYr:"Year",gNew:"New goal (e.g. Read 2 books)",gNum:"Target (opt.)",gDone:"{0}/{1} done",gNone:"No goals yet for this period.",gEdit:"Edit goal",gDel:"Delete this goal?",gThis:"Now",gFmtM:"{1} {0}",gFmtY:"{0}",withK:"Continue with Kakao",orId:"or sign in with ID",linkG:"Link Google",linkK:"Link Kakao",oauthFail:"Social sign-in failed:",linkFail:"Linking failed:",addQ:"Add another quote",addJ:"Write another entry",cntU:" entries",delEnt:"Delete this entry?",past:"Past entries ({0})",todayB:"Today",layout:"⇅ Layout",layoutT:"Section order",secStats:"Stats cards",secTop:"Top 5 / ranking",secRout:"Routine table",secGrp:"Groups",reorder:"↕ Reorder",done:"Done",up:"Move up",down:"Move down",statFail:"Group stats upload failed:",ago:"updated {0}d ago"
 },ko:{
 aYear:"연도",aMonth:"월",aPrev:"이전 주",aNext:"다음 주",daily:"일별 달성",goal:"목표",ach:"달성",
 newHabit:"새 습관 (예: 스트레칭)",add:"추가",groups:"그룹",newGroup:"새 그룹 이름",create:"만들기",inviteCode:"초대 코드",join:"참여",refresh:"새로고침",
@@ -186,7 +201,7 @@ synced:"☁ 동기화됨",syncFail:"아직 동기화 안 됨 – 이 기기에 �
 idRule:"ID: 3~30자, 영문·숫자·. _ - 만 가능",confirmOn:"Supabase의 이메일 확인이 켜져 있어요 – ID 가입을 쓰려면 꺼주세요",signinHint:"로그인하면 기기 간 동기화돼요",
 grpNA:"그룹을 아직 쓸 수 없어요:",invCode:"초대 코드:",leave:"나가기",member:"멤버",today:"오늘",thisWeek:"이번 주",thisMonth:"이번 달",me:"(나)",
 noGroups:"아직 그룹이 없어요. 만들거나 초대 코드로 참여해 보세요. 달성률만 공유되고 루틴 이름은 공유되지 않아요.",
-leaveQ:"이 그룹에서 나갈까요?",badCode:"초대 코드가 올바르지 않아요",allRank:"역대 습관별 순위",allRankHint:"성공률 순이고, 같으면 분모(기록한 날수)가 큰 쪽이 위로 가요.",tMain:"트래커",tQuote:"오늘의 문장",tJournal:"하루 일기",hideTab:"이 탭을 숨길까요?\n기록은 그대로 남고, ⇅ 화면 순서에서 다시 켤 수 있어요.",hidTabs:"숨긴 탭",show:"다시 보이기",qText:"오늘의 문장",qSrc:"출처 (책, 사람 등)",qWhy:"인상 깊었던 이유 (선택)",jText:"오늘 하루는 어땠나요? (최소 3문장)",sentN:"{0}문장",saved:"저장됨 · 체크 완료",addQ:"문장 하나 더 추가",addJ:"일기 하나 더 쓰기",cntU:"개",delEnt:"이 기록을 삭제할까요?",past:"지난 기록 ({0})",todayB:"오늘",layout:"⇅ 화면 순서",layoutT:"화면 구역 순서",secStats:"통계 카드",secTop:"Top 5 / 순위",secRout:"루틴 표",secGrp:"그룹",reorder:"↕ 순서 변경",done:"완료",up:"위로",down:"아래로",statFail:"그룹 통계 업로드 실패:",ago:"{0}일 전 업데이트"
+leaveQ:"이 그룹에서 나갈까요?",badCode:"초대 코드가 올바르지 않아요",allRank:"역대 습관별 순위",allRankHint:"성공률 순이고, 같으면 분모(기록한 날수)가 큰 쪽이 위로 가요.",tMain:"트래커",tQuote:"오늘의 문장",tJournal:"하루 일기",hideTab:"이 탭을 숨길까요?\n기록은 그대로 남고, ⇅ 화면 순서에서 다시 켤 수 있어요.",hidTabs:"숨긴 탭",show:"다시 보이기",qText:"오늘의 문장",qSrc:"출처 (책, 사람 등)",qWhy:"인상 깊었던 이유 (선택)",jText:"오늘 하루는 어땠나요? (최소 3문장)",sentN:"{0}문장",saved:"저장됨 · 체크 완료",withG:"Google로 계속하기",goalsT:"목표",secGoals:"목표",gMon:"월간",gYr:"연간",gNew:"새 목표 (예: 책 2권 읽기)",gNum:"목표 수치(선택)",gDone:"{0}/{1} 달성",gNone:"이 기간 목표가 아직 없어요.",gEdit:"목표 수정",gDel:"이 목표를 삭제할까요?",gThis:"이번",gFmtM:"{0}년 {1}",gFmtY:"{0}년",withK:"카카오로 계속하기",orId:"또는 ID로 로그인",linkG:"Google 연결",linkK:"카카오 연결",oauthFail:"소셜 로그인 실패:",linkFail:"계정 연결 실패:",addQ:"문장 하나 더 추가",addJ:"일기 하나 더 쓰기",cntU:"개",delEnt:"이 기록을 삭제할까요?",past:"지난 기록 ({0})",todayB:"오늘",layout:"⇅ 화면 순서",layoutT:"화면 구역 순서",secStats:"통계 카드",secTop:"Top 5 / 순위",secRout:"루틴 표",secGrp:"그룹",reorder:"↕ 순서 변경",done:"완료",up:"위로",down:"아래로",statFail:"그룹 통계 업로드 실패:",ago:"{0}일 전 업데이트"
 }};
 var DH={"Wake up at 7 AM":"아침 7시 기상","6+ hrs focused study":"순공 6시간 이상","Workout":"운동","Bed before 1 AM":"1시 전 취침","Drink 2L+ water":"물 2L 이상","No snacks":"간식 안 먹기","3-min meditation":"3분 명상","Quote of the Day":"오늘의 문장","Daily Journal":"하루 일기"};
 var LANG=(function(){try{var l=localStorage.getItem("disc-lang");if(l==="ko"||l==="en")return l}catch(e){}return /^ko/i.test(navigator.language||"")?"ko":"en"})();
@@ -203,13 +218,13 @@ applyLang();
 var KEY="disc-tracker-v4",state={habits:["Wake up at 7 AM","6+ hrs focused study","Workout","Bed before 1 AM","Drink 2L+ water","No snacks","3-min meditation","Quote of the Day","Daily Journal"],checks:{},starts:[],ends:[]};
 try{var s=localStorage.getItem(KEY);if(s)state=JSON.parse(s)}catch(e){}
 var KO={"아침 7시 기상":"Wake up at 7 AM","순공 6시간 이상":"6+ hrs focused study","운동":"Workout","1시 전 취침":"Bed before 1 AM","물 2L 이상":"Drink 2L+ water","간식 안 먹기":"No snacks","3분 명상":"3-min meditation","오늘의 문장":"Quote of the Day","하루 일기":"Daily Journal"};
-function norm(){state.habits=(state.habits||[]).map(function(x){return KO[x]||x});state.checks=state.checks||{};state.starts=state.starts||[];state.ends=state.ends||[];state.joined=state.joined||0;state.purged=state.purged||[];while(state.starts.length<state.habits.length)state.starts.push(0);while(state.ends.length<state.habits.length)state.ends.push(0);state.notes=state.notes||{};state.notes.quote=state.notes.quote||{};state.notes.journal=state.notes.journal||{};["quote","journal"].forEach(function(k){var N=state.notes[k];Object.keys(N).forEach(function(x){var v=N[x];if(!Array.isArray(v))v=v?[v]:[];v=v.map(function(e){if(typeof e=="string")e={text:e};e=Object.assign({},e);if(!e.id)e.id=x+"-"+Math.random().toString(36).slice(2,7);return e}).filter(function(e){return !nEmpty(e)});if(v.length)N[x]=v;else delete N[x]})});state.hiddenTabs=state.hiddenTabs||[];var mig=false;
+function norm(){state.habits=(state.habits||[]).map(function(x){return KO[x]||x});state.checks=state.checks||{};state.starts=state.starts||[];state.ends=state.ends||[];state.joined=state.joined||0;state.purged=state.purged||[];while(state.starts.length<state.habits.length)state.starts.push(0);while(state.ends.length<state.habits.length)state.ends.push(0);state.notes=state.notes||{};state.notes.quote=state.notes.quote||{};state.notes.journal=state.notes.journal||{};["quote","journal"].forEach(function(k){var N=state.notes[k];Object.keys(N).forEach(function(x){var v=N[x];if(!Array.isArray(v))v=v?[v]:[];v=v.map(function(e){if(typeof e=="string")e={text:e};e=Object.assign({},e);if(!e.id)e.id=x+"-"+Math.random().toString(36).slice(2,7);return e}).filter(function(e){return !nEmpty(e)});if(v.length)N[x]=v;else delete N[x]})});state.hiddenTabs=state.hiddenTabs||[];state.goals=state.goals||{};var mig=false;
   if(!state.m14){var n=new Date(),t=ymd(n.getFullYear(),n.getMonth(),n.getDate());["Quote of the Day","Daily Journal"].forEach(function(h){var has=state.habits.some(function(x,i){return x.trim().toLowerCase()==h.toLowerCase()&&!state.ends[i]&&!isPur(i)});if(!has){state.habits.push(h);state.starts.push(t);state.ends.push(0)}});state.m14=1;mig=true}
   fixOrder();fixLay();return mig}
 function cleanNotes(){var o={};["quote","journal"].forEach(function(k){o[k]={};var N=(state.notes||{})[k]||{};Object.keys(N).forEach(function(x){var v=(Array.isArray(N[x])?N[x]:[N[x]]).filter(function(e){return !nEmpty(typeof e=="string"?{text:e}:e)});if(v.length)o[k][x]=v})});return o}
-function payload(){return {habits:state.habits,checks:state.checks,starts:state.starts,ends:state.ends,joined:state.joined||0,purged:state.purged||[],order:state.order||[],layout:state.layout||[],notes:cleanNotes(),hiddenTabs:state.hiddenTabs||[],m14:state.m14||0}}
-var SECS=["stats","top","rout","grp"];
-function fixLay(){var o=(state.layout||[]).filter(function(k,j,a){return SECS.indexOf(k)>-1&&a.indexOf(k)===j});SECS.forEach(function(k){if(o.indexOf(k)<0)o.push(k)});state.layout=o}
+function payload(){return {habits:state.habits,checks:state.checks,starts:state.starts,ends:state.ends,joined:state.joined||0,purged:state.purged||[],order:state.order||[],layout:state.layout||[],notes:cleanNotes(),hiddenTabs:state.hiddenTabs||[],m14:state.m14||0,goals:state.goals||{}}}
+var SECS=["stats","goals","top","rout","grp"];
+function fixLay(){var o=(state.layout||[]).filter(function(k,j,a){return SECS.indexOf(k)>-1&&a.indexOf(k)===j});SECS.forEach(function(k){if(o.indexOf(k)<0){if(k=="goals"&&o.indexOf("stats")>-1)o.splice(o.indexOf("stats")+1,0,k);else o.push(k)}});state.layout=o}
 function fixOrder(){var o=[],H=state.habits.length;(state.order||[]).forEach(function(x){x=+x;if(x>=0&&x<H&&o.indexOf(x)<0)o.push(x)});for(var i=0;i<H;i++)if(o.indexOf(i)<0)o.push(i);state.order=o}
 if(norm()){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
 function ymd(y,m,d){return y*10000+(m+1)*100+d}
@@ -333,6 +348,22 @@ function renderDeleted(){
   list.forEach(function(i){var e=state.ends[i];h+='<div class="dl"><span>'+esc(hname(state.habits[i]))+'<small>'+tx("delOn",Math.floor(e/10000),Math.floor(e%10000/100),e%100)+'</small></span><span style="display:flex;gap:6px;flex:none"><button data-res="'+i+'">↺ '+tx("restore")+'</button><button data-pg="'+i+'" style="color:#c0392b">'+tx("purge")+'</button></span></div>'});
   el.innerHTML=h;el.open=open;
 }
+var GM="m",GD=new Date();
+function gkey(){return GM=="m"?"M:"+GD.getFullYear()+"-"+String(GD.getMonth()+1).padStart(2,"0"):"Y:"+GD.getFullYear()}
+function gList(){var k=gkey();state.goals[k]=state.goals[k]||[];return state.goals[k]}
+function gIsDone(g){return g.target?(g.cur||0)>=g.target:!!g.done}
+function renderGoals(){
+  if(!$("gls"))return;
+  $("gseg").innerHTML='<button data-gm="m"'+(GM=="m"?' class="on"':'')+'>'+tx("gMon")+'</button><button data-gm="y"'+(GM=="y"?' class="on"':'')+'>'+tx("gYr")+'</button>';
+  var now=new Date(),isNow=GM=="m"?(GD.getFullYear()==now.getFullYear()&&GD.getMonth()==now.getMonth()):GD.getFullYear()==now.getFullYear();
+  var lab=GM=="m"?tx("gFmtM",GD.getFullYear(),mname(GD.getMonth())):tx("gFmtY",GD.getFullYear());
+  $("gnav").innerHTML='<button data-gn="-1">‹</button><b>'+lab+'</b><span style="display:flex;gap:6px">'+(isNow?'':'<button data-gn="0">'+tx("gThis")+'</button>')+'<button data-gn="1">›</button></span>';
+  var L=state.goals[gkey()]||[],dn=L.filter(gIsDone).length,p=L.length?Math.round(dn/L.length*100):0,h="";
+  if(L.length)h+='<div class="gsum"><div class="mini" style="width:100px"><i style="width:'+p+'%"></i></div>'+tx("gDone",dn,L.length)+'</div>';
+  L.forEach(function(g,i){var d=gIsDone(g);
+    h+='<div class="gi'+(d?' dn':'')+'"><input type="checkbox" data-gc="'+i+'"'+(d?' checked':'')+'><span class="gt2">'+esc(g.text)+'</span>'+(g.target?'<span class="gp"><button data-gs="'+i+'" data-v="-1" aria-label="-1">−</button><span>'+(g.cur||0)+'/'+g.target+'</span><button data-gs="'+i+'" data-v="1" aria-label="+1">+</button></span>':'')+'<button data-ge="'+i+'" aria-label="'+tx("gEdit")+'">✎</button><button data-gx="'+i+'" aria-label="'+tx("del")+'">×</button></div>'});
+  $("gls").innerHTML=h||'<div class="gh">'+tx("gNone")+'</div>';
+}
 var LAYO=false,TAB="main",ND={quote:new Date(),journal:new Date()},ntm=null;
 try{var t0=localStorage.getItem("disc-tab");if(t0)TAB=t0}catch(e){}
 function dkey(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
@@ -391,7 +422,7 @@ function applyLayout(){
   state.layout.forEach(function(k){var e=w.querySelector('[data-sec="'+k+'"]');if(e)w.insertBefore(e,anchor)});
   $("layb").textContent=LAYO?tx("done"):tx("layout");$("layb").className=LAYO?"on":"";
   var p=$("lay");p.style.display=LAYO?"flex":"none";if(!LAYO)return;
-  var nm={stats:"secStats",top:"secTop",rout:"secRout",grp:"secGrp"},h='<div class="tph"><b>'+tx("layoutT")+'</b></div>',L=state.layout.length;
+  var nm={stats:"secStats",goals:"secGoals",top:"secTop",rout:"secRout",grp:"secGrp"},h='<div class="tph"><b>'+tx("layoutT")+'</b></div>',L=state.layout.length;
   state.layout.forEach(function(k,j){h+='<div class="dl"><span>'+(j+1)+'. '+tx(nm[k])+'</span><span style="display:flex;gap:6px;flex:none"><button data-lm="'+j+'" data-dir="-1"'+(j==0?' disabled style="opacity:.3"':'')+' aria-label="'+tx("up")+'">▲</button><button data-lm="'+j+'" data-dir="1"'+(j==L-1?' disabled style="opacity:.3"':'')+' aria-label="'+tx("down")+'">▼</button></span></div>'});
   var ht=(state.hiddenTabs||[]);
   if(ht.length){h+='<div class="tph" style="margin-top:10px"><b>'+tx("hidTabs")+'</b></div>';ht.forEach(function(k){h+='<div class="dl"><span>'+tx(k=="quote"?"tQuote":"tJournal")+'</span><button data-st="'+k+'">'+tx("show")+'</button></div>'})}
@@ -459,6 +490,7 @@ function render(){
   $("reo").textContent=REO?tx("done"):tx("reorder");$("reo").className=REO?"on":"";
   renderDeleted();
   renderTop();
+  renderGoals();
   applyLayout();
   if(!document.activeElement||!document.activeElement.closest||!document.activeElement.closest(".np"))renderTabs();
 }
@@ -482,6 +514,19 @@ $("tbl").addEventListener("click",function(e){
 });
 function add(){var v=$("newh"),t=v.value.trim();if(!t)return;var n=new Date();state.ends[state.habits.length]=0;state.starts[state.habits.length]=ymd(n.getFullYear(),n.getMonth(),n.getDate());state.habits.push(t);v.value="";save();render()}
 $("addb").onclick=add;
+function gAdd(){var t=$("gtx").value.trim();if(!t)return;var n=parseInt($("gtg").value,10);var g={id:nid(),text:t.slice(0,60)};if(n>0){g.target=n;g.cur=0}else g.done=false;gList().push(g);$("gtx").value="";$("gtg").value="";save();renderGoals()}
+$("gadd").onclick=gAdd;$("gtx").addEventListener("keydown",function(e){if(e.key==="Enter")gAdd()});
+$("gl").addEventListener("change",function(e){var c=e.target.dataset.gc;if(c==null)return;var g=gList()[+c];if(g.target)g.cur=e.target.checked?g.target:0;else g.done=e.target.checked;save();renderGoals()});
+$("gl").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;var d=b.dataset,L;
+  if(d.gm){GM=d.gm;GD=new Date();renderGoals();return}
+  if(d.gn!=null){var v=+d.gn;if(v==0)GD=new Date();else if(GM=="m")GD=new Date(GD.getFullYear(),GD.getMonth()+v,1);else GD=new Date(GD.getFullYear()+v,0,1);renderGoals();return}
+  L=gList();
+  if(d.gs!=null){var g=L[+d.gs];g.cur=Math.max(0,Math.min(g.target*10,(g.cur||0)+(+d.v)));save();renderGoals();return}
+  if(d.ge!=null){var g2=L[+d.ge],nv=prompt(tx("gEdit"),g2.text);if(nv===null)return;nv=nv.trim().slice(0,60);if(!nv)return;g2.text=nv;
+    var nt=prompt(tx("gNum"),g2.target||"");if(nt!==null){var n=parseInt(nt,10);if(n>0){g2.target=n;g2.cur=g2.cur||0;delete g2.done}else{if(g2.target)g2.done=(g2.cur||0)>=g2.target;delete g2.target;delete g2.cur}}
+    save();renderGoals();return}
+  if(d.gx!=null){if(!confirm(tx("gDel")))return;L.splice(+d.gx,1);save();renderGoals();return}
+});
 $("reo").onclick=function(){REO=!REO;render()};
 $("layb").onclick=function(){if(TAB!="main"){TAB="main";renderTabs()}LAYO=!LAYO;applyLayout()};
 $("tabs").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;
@@ -533,12 +578,26 @@ $("lang").addEventListener("click",function(e){
 });
 function toEmail(v){v=(v||"").trim().toLowerCase();return v.indexOf("@")>-1?v:v+"@tracker.app"}
 function okId(v){v=(v||"").trim();return v.indexOf("@")>-1||/^[A-Za-z0-9._-]{3,30}$/.test(v)}
+function dispName(u){if(!u)return"";var e=u.email||"",m=u.user_metadata||{};if(/@tracker\.app$/.test(e))return e.split("@")[0];return (m.full_name||m.name||m.nickname||m.preferred_username||m.user_name||e.split("@")[0]||"user").trim().slice(0,30)}
+function provs(u){return ((u&&u.identities)||[]).map(function(i){return i.provider})}
+function oauthBack(){return location.origin+location.pathname}
+function oauth(pv,link){
+  var o={provider:pv,options:{redirectTo:oauthBack()}};
+  var f=link?sb.auth.linkIdentity(o):sb.auth.signInWithOAuth(o);
+  f.then(function(r){if(r&&r.error)setSync((link?tx("linkFail"):tx("oauthFail"))+" "+r.error.message)});
+}
+var GSVG='<svg width="16" height="16" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>';
+var KSVG='<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path fill="#191919" d="M12 3C6.5 3 2 6.6 2 11c0 2.8 1.8 5.3 4.6 6.7l-1 3.6c-.1.3.3.6.6.4l4.3-2.8c.5.1 1 .1 1.5.1 5.5 0 10-3.6 10-8S17.5 3 12 3z"/></svg>';
 function renderAuth(sess){
   var a=$("auth");
   if(!sb){a.style.display="none";return}
   a.style.display="flex";
   if(sess){
-    a.innerHTML='<span style="flex:1;font-size:12px;color:var(--mute);align-self:center">'+esc((sess.user.email||"").replace(/@tracker\.app$/,""))+'</span><button id="so">'+tx("signout")+'</button>';
+    var pv=provs(sess.user),lk="";
+    if(pv.indexOf("google")<0)lk+='<button id="lg" class="og sm">'+GSVG+tx("linkG")+'</button>';
+    if(pv.indexOf("kakao")<0)lk+='<button id="lkk" class="ok sm">'+KSVG+tx("linkK")+'</button>';
+    a.innerHTML='<span style="flex:1;font-size:12px;color:var(--mute);align-self:center">'+esc(dispName(sess.user))+(pv.length?' <span style="opacity:.7">('+pv.map(function(x){return x=="email"?"ID":x=="google"?"Google":x=="kakao"?"Kakao":x}).join(" · ")+')</span>':'')+'</span><button id="so">'+tx("signout")+'</button>'+(lk?'<div class="oa" style="width:100%">'+lk+'</div>':'');
+    if($("lg"))$("lg").onclick=function(){oauth("google",true)};if($("lkk"))$("lkk").onclick=function(){oauth("kakao",true)};
     $("so").onclick=async function(){
       clearTimeout(tmr);tmr=null;
       try{
@@ -552,7 +611,8 @@ function renderAuth(sess){
       norm();wk=null;render();
     };
   }else{
-    a.innerHTML='<input id="em" type="text" placeholder="'+tx("id")+'" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false"><input id="pw" type="password" placeholder="'+tx("pw")+'" autocomplete="current-password"><button id="si">'+tx("signin")+'</button><button id="su">'+tx("signup")+'</button>';
+    a.innerHTML='<div class="oa"><button id="og" class="og">'+GSVG+tx("withG")+'</button><button id="ok" class="ok">'+KSVG+tx("withK")+'</button></div><div class="orl">'+tx("orId")+'</div><input id="em" type="text" placeholder="'+tx("id")+'" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false"><input id="pw" type="password" placeholder="'+tx("pw")+'" autocomplete="current-password"><button id="si">'+tx("signin")+'</button><button id="su">'+tx("signup")+'</button>';
+    $("og").onclick=function(){oauth("google")};$("ok").onclick=function(){oauth("kakao")};
     $("si").onclick=function(){if(!okId($("em").value)){setSync(tx("idRule"));return}sb.auth.signInWithPassword({email:toEmail($("em").value),password:$("pw").value}).then(function(r){if(r.error)setSync(r.error.message)})};
     $("su").onclick=function(){if(!okId($("em").value)){setSync(tx("idRule"));return}sb.auth.signUp({email:toEmail($("em").value),password:$("pw").value}).then(function(r){
       if(r.error)setSync(r.error.message);else if(!r.data.session)setSync(tx("confirmOn"))})};
@@ -569,7 +629,7 @@ function mergeState(a,b){
   o.joined=mn(a.joined,b.joined);
   o.order=(a.order&&a.order.length?a.order:b.order)||[];
   o.layout=(a.layout&&a.layout.length?a.layout:b.layout)||[];
-  o.hiddenTabs=a.hiddenTabs||b.hiddenTabs||[];o.m14=a.m14||b.m14||0;o.notes={};
+  o.hiddenTabs=a.hiddenTabs||b.hiddenTabs||[];o.goals={};var ga=a.goals||{},gb=b.goals||{};Object.keys(Object.assign({},gb,ga)).forEach(function(pk){var A=(ga[pk]||[]).slice(),ids={};A.forEach(function(g){ids[g.id]=1});o.goals[pk]=A.concat((gb[pk]||[]).filter(function(g){return !ids[g.id]}))});o.m14=a.m14||b.m14||0;o.notes={};
   ["quote","journal"].forEach(function(k){var x=(a.notes||{})[k]||{},y=(b.notes||{})[k]||{};o.notes[k]={};Object.keys(Object.assign({},y,x)).forEach(function(d){var A=[].concat(x[d]||[]),B=[].concat(y[d]||[]),ids={};A.forEach(function(e){if(e&&e.id)ids[e.id]=1});o.notes[k][d]=A.concat(B.filter(function(e){return !(e&&e.id&&ids[e.id])&&!(typeof e=="string"&&A.some(function(z){return (z.text||z)==e}))}))})});
   o.purged=(a.purged||[]).concat(b.purged||[]).filter(function(x,j,arr){return arr.indexOf(x)===j});
   var ca=a.checks||{},cb=b.checks||{},keys={};
@@ -666,7 +726,7 @@ try{
     sb.auth.onAuthStateChange(function(ev,sess){
       uid=sess&&sess.user?sess.user.id:null;curSess=sess;
       cy=0;if(sess&&sess.user&&sess.user.created_at){var cd=new Date(sess.user.created_at);cy=ymd(cd.getFullYear(),cd.getMonth(),cd.getDate())}
-      me=sess&&sess.user?(sess.user.email||"").split("@")[0]:"";
+      me=sess&&sess.user?dispName(sess.user):"";
       renderAuth(sess);
       if(uid){if(!tmr)setTimeout(function(){pull().catch(function(){})},0)}
       else{setSync(tx("signinHint"));$("grp").style.display="none";$("glist").innerHTML="";hasG=false}
