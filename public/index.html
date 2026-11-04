@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="version" content="1.8.0">
+<meta name="version" content="1.8.1">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Discipline Tracker</title>
 <link rel="manifest" href="/manifest.json">
@@ -125,6 +125,8 @@ body.alt .sec,body.alt #lay{display:none!important}
 .gi .gp{display:flex;align-items:center;gap:4px;flex:none;font-size:12px;color:var(--mute)}
 .gi button{font:inherit;border:0;background:none;color:var(--mute);cursor:pointer;padding:2px 5px;font-size:14px}
 .gi .gp button{border:1px solid var(--line);border-radius:6px;width:24px;height:24px;padding:0;color:var(--ink)}
+.gi input.gn{width:56px;font:inherit;font-size:13px;text-align:right;padding:3px 6px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);-moz-appearance:textfield}
+.gi input.gn::-webkit-inner-spin-button,.gi input.gn::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
 .gsum{font-size:12px;color:var(--mute);margin-bottom:4px;display:flex;align-items:center;gap:8px}
 .oa{display:flex;gap:8px;width:100%;flex-wrap:wrap}
 .oa button{flex:1;min-width:150px;display:flex;align-items:center;justify-content:center;gap:8px;font:inherit;font-size:14px;font-weight:500;border-radius:8px;padding:10px 14px;cursor:pointer}
@@ -171,7 +173,7 @@ body.alt .sec,body.alt #lay{display:none!important}
     <div class="add" style="flex-wrap:wrap"><input id="gcode" data-ip="inviteCode" placeholder="Invite code" maxlength="12" autocapitalize="characters"><button id="gjoin" data-i="join">Join</button><button id="gref" data-i="refresh">Refresh</button></div>
   </div>
   <div id="sync" style="text-align:center;font-size:11px;color:var(--mute);margin-top:10px"></div>
-  <div id="ver" style="text-align:center;font-size:10px;color:var(--mute);opacity:.7;margin-top:4px">v1.8.0</div>
+  <div id="ver" style="text-align:center;font-size:10px;color:var(--mute);opacity:.7;margin-top:4px">v1.8.1</div>
 </div>
 <script>
 var TR={en:{
@@ -187,7 +189,7 @@ synced:"☁ Synced",syncFail:"Not synced yet – saved on this device, will sync
 idRule:"ID: 3–30 chars, letters/numbers/. _ -",confirmOn:"Email confirmation is on in Supabase – turn it off to use IDs",signinHint:"Sign in to sync across devices",
 grpNA:"Groups not available yet:",invCode:"Invite code:",leave:"Leave",member:"Member",today:"Today",thisWeek:"This week",thisMonth:"This month",me:"(me)",
 noGroups:"No groups yet. Create one or join with an invite code. Only completion rates are shared – never your routine names.",
-leaveQ:"Leave this group?",badCode:"Invalid invite code",allRank:"All-time ranking by habit",allRankHint:"Ranked by success rate. If tied, the habit tracked for more days comes first.",tMain:"Tracker",tQuote:"Quote of the Day",tJournal:"Daily Journal",hideTab:"Hide this tab?\nYour entries are kept – you can bring it back from ⇅ Layout.",hidTabs:"Hidden tabs",show:"Show",qText:"Today's quote",qSrc:"Source (book, person…)",qWhy:"Why it stayed with me (optional)",jText:"How was your day? (3+ sentences)",sentN:"{0} sentences",saved:"Saved · checked off",withG:"Continue with Google",goalsT:"Goals",secGoals:"Goals",gMon:"Month",gYr:"Year",gNew:"New goal (e.g. Read 2 books)",gNum:"Target (opt.)",gDone:"{0}/{1} done",gNone:"No goals yet for this period.",gEdit:"Edit goal",gDel:"Delete this goal?",gThis:"Now",gFmtM:"{1} {0}",gFmtY:"{0}",withK:"Continue with Kakao",orId:"or sign in with ID",linkG:"Link Google",linkK:"Link Kakao",oauthFail:"Social sign-in failed:",linkFail:"Linking failed:",addQ:"Add another quote",addJ:"Write another entry",cntU:" entries",delEnt:"Delete this entry?",past:"Past entries ({0})",todayB:"Today",layout:"⇅ Layout",layoutT:"Section order",secStats:"Stats cards",secTop:"Top 5 / ranking",secRout:"Routine table",secGrp:"Groups",reorder:"↕ Reorder",done:"Done",up:"Move up",down:"Move down",statFail:"Group stats upload failed:",ago:"updated {0}d ago"
+leaveQ:"Leave this group?",badCode:"Invalid invite code",allRank:"All-time ranking by habit",allRankHint:"Ranked by success rate. If tied, the habit tracked for more days comes first.",tMain:"Tracker",tQuote:"Quote of the Day",tJournal:"Daily Journal",hideTab:"Hide this tab?\nYour entries are kept – you can bring it back from ⇅ Layout.",hidTabs:"Hidden tabs",show:"Show",qText:"Today's quote",qSrc:"Source (book, person…)",qWhy:"Why it stayed with me (optional)",jText:"How was your day? (3+ sentences)",sentN:"{0} sentences",saved:"Saved · checked off",withG:"Continue with Google",goalsT:"Goals",secGoals:"Goals",gMon:"Month",gYr:"Year",gNew:"New goal (e.g. Read 2 books)",gNum:"Target (opt.)",gDone:"{0}/{1} done",gNone:"No goals yet for this period.",gCur:"Current progress",gEdit:"Edit goal",gDel:"Delete this goal?",gThis:"Now",gFmtM:"{1} {0}",gFmtY:"{0}",withK:"Continue with Kakao",orId:"or sign in with ID",linkG:"Link Google",linkK:"Link Kakao",oauthFail:"Social sign-in failed:",linkFail:"Linking failed:",addQ:"Add another quote",addJ:"Write another entry",cntU:" entries",delEnt:"Delete this entry?",past:"Past entries ({0})",todayB:"Today",layout:"⇅ Layout",layoutT:"Section order",secStats:"Stats cards",secTop:"Top 5 / ranking",secRout:"Routine table",secGrp:"Groups",reorder:"↕ Reorder",done:"Done",up:"Move up",down:"Move down",statFail:"Group stats upload failed:",ago:"updated {0}d ago"
 },ko:{
 aYear:"연도",aMonth:"월",aPrev:"이전 주",aNext:"다음 주",daily:"일별 달성",goal:"목표",ach:"달성",
 newHabit:"새 습관 (예: 스트레칭)",add:"추가",groups:"그룹",newGroup:"새 그룹 이름",create:"만들기",inviteCode:"초대 코드",join:"참여",refresh:"새로고침",
@@ -201,7 +203,7 @@ synced:"☁ 동기화됨",syncFail:"아직 동기화 안 됨 – 이 기기에 �
 idRule:"ID: 3~30자, 영문·숫자·. _ - 만 가능",confirmOn:"Supabase의 이메일 확인이 켜져 있어요 – ID 가입을 쓰려면 꺼주세요",signinHint:"로그인하면 기기 간 동기화돼요",
 grpNA:"그룹을 아직 쓸 수 없어요:",invCode:"초대 코드:",leave:"나가기",member:"멤버",today:"오늘",thisWeek:"이번 주",thisMonth:"이번 달",me:"(나)",
 noGroups:"아직 그룹이 없어요. 만들거나 초대 코드로 참여해 보세요. 달성률만 공유되고 루틴 이름은 공유되지 않아요.",
-leaveQ:"이 그룹에서 나갈까요?",badCode:"초대 코드가 올바르지 않아요",allRank:"역대 습관별 순위",allRankHint:"성공률 순이고, 같으면 분모(기록한 날수)가 큰 쪽이 위로 가요.",tMain:"트래커",tQuote:"오늘의 문장",tJournal:"하루 일기",hideTab:"이 탭을 숨길까요?\n기록은 그대로 남고, ⇅ 화면 순서에서 다시 켤 수 있어요.",hidTabs:"숨긴 탭",show:"다시 보이기",qText:"오늘의 문장",qSrc:"출처 (책, 사람 등)",qWhy:"인상 깊었던 이유 (선택)",jText:"오늘 하루는 어땠나요? (최소 3문장)",sentN:"{0}문장",saved:"저장됨 · 체크 완료",withG:"Google로 계속하기",goalsT:"목표",secGoals:"목표",gMon:"월간",gYr:"연간",gNew:"새 목표 (예: 책 2권 읽기)",gNum:"목표 수치(선택)",gDone:"{0}/{1} 달성",gNone:"이 기간 목표가 아직 없어요.",gEdit:"목표 수정",gDel:"이 목표를 삭제할까요?",gThis:"이번",gFmtM:"{0}년 {1}",gFmtY:"{0}년",withK:"카카오로 계속하기",orId:"또는 ID로 로그인",linkG:"Google 연결",linkK:"카카오 연결",oauthFail:"소셜 로그인 실패:",linkFail:"계정 연결 실패:",addQ:"문장 하나 더 추가",addJ:"일기 하나 더 쓰기",cntU:"개",delEnt:"이 기록을 삭제할까요?",past:"지난 기록 ({0})",todayB:"오늘",layout:"⇅ 화면 순서",layoutT:"화면 구역 순서",secStats:"통계 카드",secTop:"Top 5 / 순위",secRout:"루틴 표",secGrp:"그룹",reorder:"↕ 순서 변경",done:"완료",up:"위로",down:"아래로",statFail:"그룹 통계 업로드 실패:",ago:"{0}일 전 업데이트"
+leaveQ:"이 그룹에서 나갈까요?",badCode:"초대 코드가 올바르지 않아요",allRank:"역대 습관별 순위",allRankHint:"성공률 순이고, 같으면 분모(기록한 날수)가 큰 쪽이 위로 가요.",tMain:"트래커",tQuote:"오늘의 문장",tJournal:"하루 일기",hideTab:"이 탭을 숨길까요?\n기록은 그대로 남고, ⇅ 화면 순서에서 다시 켤 수 있어요.",hidTabs:"숨긴 탭",show:"다시 보이기",qText:"오늘의 문장",qSrc:"출처 (책, 사람 등)",qWhy:"인상 깊었던 이유 (선택)",jText:"오늘 하루는 어땠나요? (최소 3문장)",sentN:"{0}문장",saved:"저장됨 · 체크 완료",withG:"Google로 계속하기",goalsT:"목표",secGoals:"목표",gMon:"월간",gYr:"연간",gNew:"새 목표 (예: 책 2권 읽기)",gNum:"목표 수치(선택)",gDone:"{0}/{1} 달성",gNone:"이 기간 목표가 아직 없어요.",gCur:"현재 진행 수치",gEdit:"목표 수정",gDel:"이 목표를 삭제할까요?",gThis:"이번",gFmtM:"{0}년 {1}",gFmtY:"{0}년",withK:"카카오로 계속하기",orId:"또는 ID로 로그인",linkG:"Google 연결",linkK:"카카오 연결",oauthFail:"소셜 로그인 실패:",linkFail:"계정 연결 실패:",addQ:"문장 하나 더 추가",addJ:"일기 하나 더 쓰기",cntU:"개",delEnt:"이 기록을 삭제할까요?",past:"지난 기록 ({0})",todayB:"오늘",layout:"⇅ 화면 순서",layoutT:"화면 구역 순서",secStats:"통계 카드",secTop:"Top 5 / 순위",secRout:"루틴 표",secGrp:"그룹",reorder:"↕ 순서 변경",done:"완료",up:"위로",down:"아래로",statFail:"그룹 통계 업로드 실패:",ago:"{0}일 전 업데이트"
 }};
 var DH={"Wake up at 7 AM":"아침 7시 기상","6+ hrs focused study":"순공 6시간 이상","Workout":"운동","Bed before 1 AM":"1시 전 취침","Drink 2L+ water":"물 2L 이상","No snacks":"간식 안 먹기","3-min meditation":"3분 명상","Quote of the Day":"오늘의 문장","Daily Journal":"하루 일기"};
 var LANG=(function(){try{var l=localStorage.getItem("disc-lang");if(l==="ko"||l==="en")return l}catch(e){}return /^ko/i.test(navigator.language||"")?"ko":"en"})();
@@ -361,7 +363,7 @@ function renderGoals(){
   var L=state.goals[gkey()]||[],dn=L.filter(gIsDone).length,p=L.length?Math.round(dn/L.length*100):0,h="";
   if(L.length)h+='<div class="gsum"><div class="mini" style="width:100px"><i style="width:'+p+'%"></i></div>'+tx("gDone",dn,L.length)+'</div>';
   L.forEach(function(g,i){var d=gIsDone(g);
-    h+='<div class="gi'+(d?' dn':'')+'"><input type="checkbox" data-gc="'+i+'"'+(d?' checked':'')+'><span class="gt2">'+esc(g.text)+'</span>'+(g.target?'<span class="gp"><button data-gs="'+i+'" data-v="-1" aria-label="-1">−</button><span>'+(g.cur||0)+'/'+g.target+'</span><button data-gs="'+i+'" data-v="1" aria-label="+1">+</button></span>':'')+'<button data-ge="'+i+'" aria-label="'+tx("gEdit")+'">✎</button><button data-gx="'+i+'" aria-label="'+tx("del")+'">×</button></div>'});
+    h+='<div class="gi'+(d?' dn':'')+'"><input type="checkbox" data-gc="'+i+'"'+(d?' checked':'')+'><span class="gt2">'+esc(g.text)+'</span>'+(g.target?'<span class="gp"><button data-gs="'+i+'" data-v="-1" aria-label="-1">−</button><span style="display:flex;align-items:center;gap:2px"><input class="gn" type="number" inputmode="numeric" min="0" data-gi="'+i+'" value="'+(g.cur||0)+'" aria-label="'+tx("gCur")+'">/'+g.target+'</span><button data-gs="'+i+'" data-v="1" aria-label="+1">+</button></span>':'')+'<button data-ge="'+i+'" aria-label="'+tx("gEdit")+'">✎</button><button data-gx="'+i+'" aria-label="'+tx("del")+'">×</button></div>'});
   $("gls").innerHTML=h||'<div class="gh">'+tx("gNone")+'</div>';
 }
 var LAYO=false,TAB="main",ND={quote:new Date(),journal:new Date()},ntm=null;
@@ -515,8 +517,8 @@ $("tbl").addEventListener("click",function(e){
 function add(){var v=$("newh"),t=v.value.trim();if(!t)return;var n=new Date();state.ends[state.habits.length]=0;state.starts[state.habits.length]=ymd(n.getFullYear(),n.getMonth(),n.getDate());state.habits.push(t);v.value="";save();render()}
 $("addb").onclick=add;
 function gAdd(){var t=$("gtx").value.trim();if(!t)return;var n=parseInt($("gtg").value,10);var g={id:nid(),text:t.slice(0,60)};if(n>0){g.target=n;g.cur=0}else g.done=false;gList().push(g);$("gtx").value="";$("gtg").value="";save();renderGoals()}
-$("gadd").onclick=gAdd;$("gtx").addEventListener("keydown",function(e){if(e.key==="Enter")gAdd()});
-$("gl").addEventListener("change",function(e){var c=e.target.dataset.gc;if(c==null)return;var g=gList()[+c];if(g.target)g.cur=e.target.checked?g.target:0;else g.done=e.target.checked;save();renderGoals()});
+$("gadd").onclick=gAdd;$("gl").addEventListener("keydown",function(e){if(e.key==="Enter"&&e.target.classList.contains("gn"))e.target.blur()});$("gtx").addEventListener("keydown",function(e){if(e.key==="Enter")gAdd()});
+$("gl").addEventListener("change",function(e){var gi=e.target.dataset.gi;if(gi!=null){var G=gList()[+gi],v=parseInt(e.target.value,10);G.cur=isNaN(v)?0:Math.max(0,Math.min(G.target*10,v));save();renderGoals();return}var c=e.target.dataset.gc;if(c==null)return;var g=gList()[+c];if(g.target)g.cur=e.target.checked?g.target:0;else g.done=e.target.checked;save();renderGoals()});
 $("gl").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;var d=b.dataset,L;
   if(d.gm){GM=d.gm;GD=new Date();renderGoals();return}
   if(d.gn!=null){var v=+d.gn;if(v==0)GD=new Date();else if(GM=="m")GD=new Date(GD.getFullYear(),GD.getMonth()+v,1);else GD=new Date(GD.getFullYear()+v,0,1);renderGoals();return}
