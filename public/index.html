@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="version" content="1.8.2">
+<meta name="version" content="1.8.3">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Discipline Tracker</title>
 <link rel="manifest" href="/manifest.json">
@@ -173,7 +173,7 @@ body.alt .sec,body.alt #lay{display:none!important}
     <div class="add" style="flex-wrap:wrap"><input id="gcode" data-ip="inviteCode" placeholder="Invite code" maxlength="12" autocapitalize="characters"><button id="gjoin" data-i="join">Join</button><button id="gref" data-i="refresh">Refresh</button></div>
   </div>
   <div id="sync" style="text-align:center;font-size:11px;color:var(--mute);margin-top:10px"></div>
-  <div id="ver" style="text-align:center;font-size:10px;color:var(--mute);opacity:.7;margin-top:4px">v1.8.2</div>
+  <div id="ver" style="text-align:center;font-size:10px;color:var(--mute);opacity:.7;margin-top:4px">v1.8.3</div>
 </div>
 <script>
 var TR={en:{
@@ -421,7 +421,8 @@ function onNote(k,el){
 }
 function applyLayout(){
   fixLay();var w=document.querySelector(".wrap"),anchor=$("auth");
-  state.layout.forEach(function(k){var e=w.querySelector('[data-sec="'+k+'"]');if(e)w.insertBefore(e,anchor)});
+  var curO=[].map.call(w.querySelectorAll(":scope > [data-sec]"),function(e){return e.dataset.sec}).join(",");
+  if(curO!==state.layout.join(","))state.layout.forEach(function(k){var e=w.querySelector('[data-sec="'+k+'"]');if(e)w.insertBefore(e,anchor)});
   $("layb").textContent=LAYO?tx("done"):tx("layout");$("layb").className=LAYO?"on":"";
   var p=$("lay");p.style.display=LAYO?"flex":"none";if(!LAYO)return;
   var nm={stats:"secStats",goals:"secGoals",top:"secTop",rout:"secRout",grp:"secGrp"},h='<div class="tph"><b>'+tx("layoutT")+'</b></div>',L=state.layout.length;
@@ -569,7 +570,8 @@ $("deld").addEventListener("click",function(e){var b=e.target.closest("button");
 $("newh").addEventListener("keydown",function(e){if(e.key==="Enter")add()});
 $("wp").onclick=function(){if(wk>0)wk--;else if(!isSep()){cur.setMonth(cur.getMonth()-1);wk=pg()-1}render()};
 $("wn").onclick=function(){if(wk<pg()-1)wk++;else{cur.setMonth(cur.getMonth()+1);wk=0}render()};
-window.addEventListener("resize",render);
+var lastW=window.innerWidth;
+window.addEventListener("resize",function(){if(window.innerWidth===lastW)return;lastW=window.innerWidth;render()});
 render();
 $("lang").addEventListener("click",function(e){
   var b=e.target.closest("button");if(!b||!b.dataset.l||b.dataset.l===LANG)return;
